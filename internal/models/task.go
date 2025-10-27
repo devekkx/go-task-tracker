@@ -68,3 +68,20 @@ func (t *Task) MarkPending() {
 	t.Status = StatusPending
 	t.UpdatedAt = time.Now()
 }
+
+// SetDueDate assigns a due date to the task.
+func (t *Task) SetDueDate(d time.Time) {
+	t.DueDate = &d
+	t.UpdatedAt = time.Now()
+}
+
+// AddTag appends a tag if it is not already present.
+func (t *Task) AddTag(tag string) {
+	for _, existing := range t.Tags {
+		if existing == tag {
+			return
+		}
+	}
+	t.Tags = append(t.Tags, tag)
+	t.UpdatedAt = time.Now()
+}
