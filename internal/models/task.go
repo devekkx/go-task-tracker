@@ -85,3 +85,19 @@ func (t *Task) AddTag(tag string) {
 	t.Tags = append(t.Tags, tag)
 	t.UpdatedAt = time.Now()
 }
+
+// IsOverdue returns true when the task has a past due date and is not done.
+func (t *Task) IsOverdue() bool {
+	if t.DueDate == nil {
+		return false
+	}
+	return time.Now().After(*t.DueDate) && t.Status != StatusDone
+}
+
+// DaysUntilDue returns the number of days until the due date, or -1 if unset.
+func (t *Task) DaysUntilDue() int {
+	if t.DueDate == nil {
+		return -1
+	}
+	return int(time.Until(*t.DueDate).Hours() / 24)
+}
