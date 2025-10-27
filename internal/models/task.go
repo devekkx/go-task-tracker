@@ -35,3 +35,18 @@ type Task struct {
 	CreatedAt   time.Time  `json:"created_at"`
 	UpdatedAt   time.Time  `json:"updated_at"`
 }
+
+// NewTask creates a Task with defaults.
+func NewTask(title, description string, priority Priority) *Task {
+	now := time.Now()
+	return &Task{
+		ID:          generateID("task"),
+		Title:       title,
+		Description: description,
+		Priority:    priority,
+		Status:      StatusPending,
+		Tags:        []string{},
+		CreatedAt:   now,
+		UpdatedAt:   now,
+	}
+}
