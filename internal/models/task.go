@@ -50,3 +50,21 @@ func NewTask(title, description string, priority Priority) *Task {
 		UpdatedAt:   now,
 	}
 }
+
+// MarkDone sets the task status to done.
+func (t *Task) MarkDone() {
+	t.Status = StatusDone
+	t.UpdatedAt = time.Now()
+}
+
+// MarkInProgress sets the task status to in-progress.
+func (t *Task) MarkInProgress() {
+	t.Status = StatusInProgress
+	t.UpdatedAt = time.Now()
+}
+
+// MarkPending resets the task to pending.
+func (t *Task) MarkPending() {
+	t.Status = StatusPending
+	t.UpdatedAt = time.Now()
+}
