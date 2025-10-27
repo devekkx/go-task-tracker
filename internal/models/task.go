@@ -101,3 +101,41 @@ func (t *Task) DaysUntilDue() int {
 	}
 	return int(time.Until(*t.DueDate).Hours() / 24)
 }
+
+// Validate checks that the task has required fields
+func (t *Task) Validate() error {
+	if t.Title == "" {
+		return fmt.Errorf("task title cannot be empty")
+	}
+	switch t.Priority {
+	case PriorityLow, PriorityMedium, PriorityHigh:
+	default:
+		return fmt.Errorf("invalid priority %q: must be low, medium, or high", t.Priority)
+	}
+	switch t.Status {
+	case StatusPending, StatusInProgress, StatusDone:
+	default:
+		return fmt.Errorf("invalid status %q", t.Status)
+	}
+	return nil
+}
+
+// ValidPriority parses and validates a priority string.
+func ValidPriority(s string) (Priority, error) {
+	switch Priority(s) {
+	case PriorityLow, PriorityMedium, PriorityHigh:
+		return Priority(s), nil
+	default:
+		return "", fmt.Errorf("invalid priority %q: must be low, medium, or high", s)
+	}
+}
+
+// ValidStatus parses and validates a status string.
+func ValidStatus(s string) (Status, error) {
+	switch Status(s) {
+	case StatusPending, StatusInProgress, StatusDone:
+		return Status(s), nil
+	default:
+		return "", fmt.Errorf("invalid status %q: must be pending, in-progress, or done", s)
+	}
+}
