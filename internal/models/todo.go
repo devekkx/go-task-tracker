@@ -19,3 +19,27 @@ type TodoList struct {
 	CreatedAt time.Time  `json:"created_at"`
 	UpdatedAt time.Time  `json:"updated_at"`
 }
+
+// NewTodoList creates a TodoList with the given name.
+func NewTodoList(name string) *TodoList {
+	now := time.Now()
+	return &TodoList{
+		ID:        generateID("todo"),
+		Name:      name,
+		Items:     []TodoItem{},
+		CreatedAt: now,
+		UpdatedAt: now,
+	}
+}
+
+// NewTodoItem creates a TodoItem with the given content.
+func NewTodoItem(content string) TodoItem {
+	now := time.Now()
+	return TodoItem{
+		ID:        generateID("item"),
+		Content:   content,
+		Done:      false,
+		CreatedAt: now,
+		UpdatedAt: now,
+	}
+}
