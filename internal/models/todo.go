@@ -10,3 +10,12 @@ type TodoItem struct {
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 }
+
+// TodoList groups related TodoItems.
+type TodoList struct {
+	ID        string     `json:"id"`
+	Name      string     `json:"name"`
+	Items     []TodoItem `json:"items"`
+	CreatedAt time.Time  `json:"created_at"`
+	UpdatedAt time.Time  `json:"updated_at"`
+}
