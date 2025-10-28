@@ -43,3 +43,11 @@ func NewTodoItem(content string) TodoItem {
 		UpdatedAt: now,
 	}
 }
+
+// AddItem appends a new item to the list and returns it.
+func (l *TodoList) AddItem(content string) TodoItem {
+	item := NewTodoItem(content)
+	l.Items = append(l.Items, item)
+	l.UpdatedAt = time.Now()
+	return item
+}
