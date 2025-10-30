@@ -83,3 +83,13 @@ func (s *Store) AddTask(task *models.Task) error {
 	s.Tasks = append(s.Tasks, *task)
 	return s.save()
 }
+
+// GetTask returns the task with the given ID.
+func (s *Store) GetTask(id string) (*models.Task, error) {
+	for i := range s.Tasks {
+		if s.Tasks[i].ID == id {
+			return &s.Tasks[i], nil
+		}
+	}
+	return nil, fmt.Errorf("task %q not found", id)
+}
