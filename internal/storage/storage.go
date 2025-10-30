@@ -93,3 +93,17 @@ func (s *Store) GetTask(id string) (*models.Task, error) {
 	}
 	return nil, fmt.Errorf("task %q not found", id)
 }
+
+// UpdateTask replaces the stored task with the given one.
+func (s *Store) UpdateTask(task *models.Task) error {
+	if err := task.Validate(); err != nil {
+		return err
+	}
+	for i := range s.Tasks {
+		if s.Tasks[i].ID == task.ID {
+			s.Tasks[i] = *task
+			return s.save()
+		}
+	}
+	return fmt.Errorf("task %q not found", task.ID)
+}
