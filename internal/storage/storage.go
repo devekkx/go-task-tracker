@@ -74,3 +74,12 @@ func (s *Store) save() error {
 
 // DataPath returns the path to the backing JSON file.
 func (s *Store) DataPath() string { return s.path }
+
+// AddTask persists a new task.
+func (s *Store) AddTask(task *models.Task) error {
+	if err := task.Validate(); err != nil {
+		return err
+	}
+	s.Tasks = append(s.Tasks, *task)
+	return s.save()
+}
