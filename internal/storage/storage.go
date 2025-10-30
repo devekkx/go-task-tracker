@@ -118,3 +118,44 @@ func (s *Store) DeleteTask(id string) error {
 	}
 	return fmt.Errorf("task %q not found", id)
 }
+
+// FilterOptions controls which tasks ListTasks returns.
+type FilterOptions struct {
+	Status   string
+	Priority string
+	Tag      string
+	Search   string
+}
+
+// ListTasks returns tasks matching the given filter options.
+func (s *Store) ListTasks(opts FilterOptions) []models.Task {
+	result := make([]models.Task, 0)
+	for _, t := range s.Tasks {
+		if matchesFilter(t, opts) {
+			result = append(result, t)
+		}
+	}
+	return result
+}
+
+func matchesFilter(t models.Task, opts FilterOptions) bool {
+	if opts.Status != "" && string(t.Status) != opts.Status {
+		return false
+	}
+	if opts.Priority != "" && string(t.Priority) != opts.Priority {
+		return false
+	}
+	if opts.Tag != "" {
+		found := false
+		for _, tag := range t.Tags {
+			if tag == opts.Tag {
+				found = true
+				break
+			}
+		}
+		if !found {
+			return false
+		}
+	}
+	return true
+}
