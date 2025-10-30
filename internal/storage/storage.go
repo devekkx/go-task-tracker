@@ -107,3 +107,14 @@ func (s *Store) UpdateTask(task *models.Task) error {
 	}
 	return fmt.Errorf("task %q not found", task.ID)
 }
+
+// DeleteTask removes the task with the given ID.
+func (s *Store) DeleteTask(id string) error {
+	for i, t := range s.Tasks {
+		if t.ID == id {
+			s.Tasks = append(s.Tasks[:i], s.Tasks[i+1:]...)
+			return s.save()
+		}
+	}
+	return fmt.Errorf("task %q not found", id)
+}
