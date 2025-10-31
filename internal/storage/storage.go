@@ -166,3 +166,53 @@ func matchesFilter(t models.Task, opts FilterOptions) bool {
 	}
 	return true
 }
+
+// --- Todo CRUD ---
+
+// AddTodoList persists a new TodoList.
+func (s *Store) AddTodoList(list *models.TodoList) error {
+	if err := list.Validate(); err != nil {
+		return err
+	}
+	s.TodoLists = append(s.TodoLists, *list)
+	return s.save()
+}
+
+// GetTodoList returns the list with the given ID.
+func (s *Store) GetTodoList(id string) (*models.TodoList, error) {
+	for i := range s.TodoLists {
+		if s.TodoLists[i].ID == id {
+			return &s.TodoLists[i], nil
+		}
+	}
+	return nil, fmt.Errorf("todo list %q not found", id)
+}
+
+// UpdateTodoList replaces the stored list with the given one.
+func (s *Store) UpdateTodoList(list *models.TodoList) error {
+	for i := range s.TodoLists {
+		if s.TodoLists[i].ID == list.ID {
+			s.TodoLists[i] = *list
+			return s.save()
+		}
+	}
+	return fmt.Errorf("todo list %q not found", list.ID)
+}
+
+// DeleteTodoList removes the list with the given ID.
+func (s *Store) DeleteTodoList(id string) error {
+	for i, l := range s.TodoLists {
+		if l.ID == id {
+			s.TodoLists = append(s.TodoLists[:i], s.TodoLists[i+1:]...)
+			return s.save()
+		}
+	}
+	return fmt.Errorf("todo list %q not found", id)
+}
+
+// ListTodoLists returns a copy of all todo lists.
+func (s *Store) ListTodoLists() []models.TodoList {
+	result := make([]models.TodoList, len(s.TodoLists))
+	copy(result, s.TodoLists)
+	return result
+}
