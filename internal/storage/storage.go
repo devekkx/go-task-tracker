@@ -140,6 +140,12 @@ func (s *Store) ListTasks(opts FilterOptions) []models.Task {
 }
 
 func matchesFilter(t models.Task, opts FilterOptions) bool {
+	if opts.Search != "" {
+		q := strings.ToLower(opts.Search)
+		if !strings.Contains(strings.ToLower(t.Title), q) && !strings.Contains(strings.ToLower(t.Description), q) {
+			return false
+		}
+	}
 	if opts.Status != "" && string(t.Status) != opts.Status {
 		return false
 	}
