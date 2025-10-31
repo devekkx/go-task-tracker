@@ -216,3 +216,41 @@ func (s *Store) ListTodoLists() []models.TodoList {
 	copy(result, s.TodoLists)
 	return result
 }
+
+// Stats summarises task and todo counts.
+type Stats struct {
+	TotalTasks      int
+	PendingTasks    int
+	InProgressTasks int
+	DoneTasks       int
+	OverdueTasks    int
+	TotalTodoLists  int
+	TotalTodoItems  int
+	DoneTodoItems   int
+}
+
+// GetStats computes aggregate statistics across all tasks and todo lists.
+func (s *Store) GetStats() Stats {
+	stats := Stats{
+		TotalTasks:     len(s.Tasks),
+		TotalTodoLists: len(s.TodoLists),
+	}
+	for _, t := range s.Tasks {
+		switch t.Status {
+		case models.StatusPending:
+			stats.PendingTasks++
+		case models.StatusInProgress:
+			stats.InProgressTasks++
+		case models.StatusDone:
+			stats.DoneTasks++
+		}
+		if t.IsOverdue() {
+			stats.OverdueTasks++
+		}
+	}
+	for _, l := range s.TodoLists {
+		stats.TotalTodoItems += l.TotalItems()
+		stats.DoneTodoItems += l.DoneItems()
+	}
+	return stats
+}
