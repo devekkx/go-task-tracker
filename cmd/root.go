@@ -1,7 +1,31 @@
 package cmd
 
-import "fmt"
+import (
+	"fmt"
+	"os"
 
+	"github.com/spf13/cobra"
+)
+
+var rootCmd = &cobra.Command{
+	Use:   "tracker",
+	Short: "A CLI task and todo list manager",
+	Long: `tracker is a fast, offline-first CLI tool for managing tasks and todo lists.
+
+Your data is stored locally at ~/.task-tracker/data.json.`,
+}
+
+// Execute runs the root command
 func Execute() {
-	fmt.Println("tracker")
+	if err := rootCmd.Execute(); err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+}
+
+func init() {
+	rootCmd.AddCommand(taskCmd)
+	rootCmd.AddCommand(todoCmd)
+	rootCmd.AddCommand(versionCmd)
+	rootCmd.AddCommand(statsCmd)
 }
