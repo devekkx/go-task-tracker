@@ -60,6 +60,32 @@ var taskAddCmd = &cobra.Command{
 	},
 }
 
+var (
+	listStatus   string
+	listPriority string
+	listTag      string
+	listSearch   string
+)
+
+var taskListCmd = &cobra.Command{
+	Use:   "list",
+	Short: "List tasks",
+	RunE: func(cmd *cobra.Command, args []string) error {
+		store, err := storage.New()
+		if err != nil {
+			return err
+		}
+		tasks := store.ListTasks(storage.FilterOptions{
+			Status:   listStatus,
+			Priority: listPriority,
+			Tag:      listTag,
+			Search:   listSearch,
+		})
+		display.PrintTasks(tasks)
+		return nil
+	},
+}
+
 func init() {
 	taskAddCmd.Flags().StringVarP(&addDesc, "desc", "d", "", "Task description")
 	taskAddCmd.Flags().StringVarP(&addPriority, "priority", "p", "medium", "Priority: low, medium, high")
