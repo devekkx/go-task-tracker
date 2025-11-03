@@ -15,7 +15,7 @@ var rootCmd = &cobra.Command{
 Your data is stored locally at ~/.task-tracker/data.json.`,
 }
 
-// Execute runs the root command
+// Execute starts the root command
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Fprintln(os.Stderr, err)
