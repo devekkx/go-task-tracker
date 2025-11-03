@@ -86,6 +86,24 @@ var taskListCmd = &cobra.Command{
 	},
 }
 
+var taskShowCmd = &cobra.Command{
+	Use:   "show <id>",
+	Short: "Show task details",
+	Args:  cobra.ExactArgs(1),
+	RunE: func(cmd *cobra.Command, args []string) error {
+		store, err := storage.New()
+		if err != nil {
+			return err
+		}
+		task, err := store.GetTask(args[0])
+		if err != nil {
+			return err
+		}
+		display.PrintTask(task)
+		return nil
+	},
+}
+
 func init() {
 	taskAddCmd.Flags().StringVarP(&addDesc, "desc", "d", "", "Task description")
 	taskAddCmd.Flags().StringVarP(&addPriority, "priority", "p", "medium", "Priority: low, medium, high")
