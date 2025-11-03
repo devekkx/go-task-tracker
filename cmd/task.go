@@ -104,6 +104,50 @@ var taskShowCmd = &cobra.Command{
 	},
 }
 
+var taskDoneCmd = &cobra.Command{
+	Use:   "done <id>",
+	Short: "Mark a task as done",
+	Args:  cobra.ExactArgs(1),
+	RunE: func(cmd *cobra.Command, args []string) error {
+		store, err := storage.New()
+		if err != nil {
+			return err
+		}
+		task, err := store.GetTask(args[0])
+		if err != nil {
+			return err
+		}
+		task.MarkDone()
+		if err := store.UpdateTask(task); err != nil {
+			return err
+		}
+		display.Success("Task marked as done: %s", task.Title)
+		return nil
+	},
+}
+
+var taskStartCmd = &cobra.Command{
+	Use:   "start <id>",
+	Short: "Mark a task as in-progress",
+	Args:  cobra.ExactArgs(1),
+	RunE: func(cmd *cobra.Command, args []string) error {
+		store, err := storage.New()
+		if err != nil {
+			return err
+		}
+		task, err := store.GetTask(args[0])
+		if err != nil {
+			return err
+		}
+		task.MarkInProgress()
+		if err := store.UpdateTask(task); err != nil {
+			return err
+		}
+		display.Success("Task started: %s", task.Title)
+		return nil
+	},
+}
+
 func init() {
 	taskAddCmd.Flags().StringVarP(&addDesc, "desc", "d", "", "Task description")
 	taskAddCmd.Flags().StringVarP(&addPriority, "priority", "p", "medium", "Priority: low, medium, high")
