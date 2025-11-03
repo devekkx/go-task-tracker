@@ -115,4 +115,5 @@ func init() {
 	taskListCmd.Flags().StringVarP(&listSearch, "search", "q", "", "Search title and description")
 	taskCmd.AddCommand(taskAddCmd)
 	taskCmd.AddCommand(taskListCmd)
+	taskCmd.AddCommand(taskShowCmd)
 }
