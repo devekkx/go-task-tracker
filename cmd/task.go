@@ -91,5 +91,10 @@ func init() {
 	taskAddCmd.Flags().StringVarP(&addPriority, "priority", "p", "medium", "Priority: low, medium, high")
 	taskAddCmd.Flags().StringVar(&addDue, "due", "", "Due date (YYYY-MM-DD)")
 	taskAddCmd.Flags().StringVarP(&addTags, "tags", "t", "", "Comma-separated tags")
+	taskListCmd.Flags().StringVarP(&listStatus, "status", "s", "", "Filter by status")
+	taskListCmd.Flags().StringVarP(&listPriority, "priority", "p", "", "Filter by priority")
+	taskListCmd.Flags().StringVarP(&listTag, "tag", "t", "", "Filter by tag")
+	taskListCmd.Flags().StringVarP(&listSearch, "search", "q", "", "Search title and description")
 	taskCmd.AddCommand(taskAddCmd)
+	taskCmd.AddCommand(taskListCmd)
 }
