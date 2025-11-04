@@ -170,6 +170,63 @@ var taskDeleteCmd = &cobra.Command{
 	},
 }
 
+var (
+	updateTitle    string
+	updateDesc     string
+	updatePriority string
+	updateStatus   string
+	updateDue      string
+	updateTags     string
+)
+
+var taskUpdateCmd = &cobra.Command{
+	Use:   "update <id>",
+	Short: "Update a task",
+	Args:  cobra.ExactArgs(1),
+	RunE: func(cmd *cobra.Command, args []string) error {
+		store, err := storage.New()
+		if err != nil {
+			return err
+		}
+		task, err := store.GetTask(args[0])
+		if err != nil {
+			return err
+		}
+		changed := false
+		if updateTitle != "" { task.Title = updateTitle; changed = true }
+		if updateDesc != "" { task.Description = updateDesc; changed = true }
+		if updatePriority != "" {
+			p, err := models.ValidPriority(updatePriority)
+			if err != nil { return err }
+			task.Priority = p; changed = true
+		}
+		if updateStatus != "" {
+			s, err := models.ValidStatus(updateStatus)
+			if err != nil { return err }
+			task.Status = s; changed = true
+		}
+		if updateDue != "" {
+			d, err := time.Parse("2006-01-02", updateDue)
+			if err != nil { return fmt.Errorf("invalid due date %q: use YYYY-MM-DD", updateDue) }
+			task.SetDueDate(d); changed = true
+		}
+		if updateTags != "" {
+			task.Tags = []string{}
+			for _, tag := range strings.Split(updateTags, ",") {
+				task.AddTag(strings.TrimSpace(tag))
+			}
+			changed = true
+		}
+		if !changed {
+			display.Warn("No changes provided.")
+			return nil
+		}
+		if err := store.UpdateTask(task); err != nil { return err }
+		display.Success("Task updated: %s", task.Title)
+		return nil
+	},
+}
+
 func init() {
 	taskAddCmd.Flags().StringVarP(&addDesc, "desc", "d", "", "Task description")
 	taskAddCmd.Flags().StringVarP(&addPriority, "priority", "p", "medium", "Priority: low, medium, high")
