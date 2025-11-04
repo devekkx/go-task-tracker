@@ -148,6 +148,28 @@ var taskStartCmd = &cobra.Command{
 	},
 }
 
+var taskDeleteCmd = &cobra.Command{
+	Use:     "delete <id>",
+	Aliases: []string{"rm"},
+	Short:   "Delete a task",
+	Args:    cobra.ExactArgs(1),
+	RunE: func(cmd *cobra.Command, args []string) error {
+		store, err := storage.New()
+		if err != nil {
+			return err
+		}
+		task, err := store.GetTask(args[0])
+		if err != nil {
+			return err
+		}
+		if err := store.DeleteTask(args[0]); err != nil {
+			return err
+		}
+		display.Success("Task deleted: %s", task.Title)
+		return nil
+	},
+}
+
 func init() {
 	taskAddCmd.Flags().StringVarP(&addDesc, "desc", "d", "", "Task description")
 	taskAddCmd.Flags().StringVarP(&addPriority, "priority", "p", "medium", "Priority: low, medium, high")
