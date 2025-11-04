@@ -241,4 +241,12 @@ func init() {
 	taskCmd.AddCommand(taskShowCmd)
 	taskCmd.AddCommand(taskDoneCmd)
 	taskCmd.AddCommand(taskStartCmd)
+	taskCmd.AddCommand(taskDeleteCmd)
+	taskUpdateCmd.Flags().StringVar(&updateTitle, "title", "", "New title")
+	taskUpdateCmd.Flags().StringVarP(&updateDesc, "desc", "d", "", "New description")
+	taskUpdateCmd.Flags().StringVarP(&updatePriority, "priority", "p", "", "New priority")
+	taskUpdateCmd.Flags().StringVarP(&updateStatus, "status", "s", "", "New status")
+	taskUpdateCmd.Flags().StringVar(&updateDue, "due", "", "New due date (YYYY-MM-DD)")
+	taskUpdateCmd.Flags().StringVarP(&updateTags, "tags", "t", "", "New tags (replaces existing)")
+	taskCmd.AddCommand(taskUpdateCmd)
 }
