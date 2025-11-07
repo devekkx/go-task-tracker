@@ -102,7 +102,7 @@ func (t *Task) DaysUntilDue() int {
 	return int(time.Until(*t.DueDate).Hours() / 24)
 }
 
-// Validate verifies the task has required fields
+// Validate checks required task fields
 func (t *Task) Validate() error {
 	if t.Title == "" {
 		return fmt.Errorf("task title cannot be empty")
