@@ -12,11 +12,18 @@ var rootCmd = &cobra.Command{
 	Short: "A CLI task and todo list manager",
 	Long: `tracker is a fast, offline-first CLI tool for managing tasks and todo lists.
 
-Your data is stored locally at ~/.task-tracker/data.json.`,
+Your data is stored at ~/.task-tracker/data.json.
+
+Examples:
+  tracker task add "Buy groceries" --priority medium
+  tracker task list
+  tracker todo create "Weekend Tasks"`,
 }
 
 // Execute runs the root command
+// Execute runs the root command
 func Execute() {
+
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)

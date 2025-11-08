@@ -129,6 +129,7 @@ func (l *TodoList) Progress() float64 {
 }
 
 // Validate checks that the todo list has required fields
+// Validate checks that the todo list has required fields
 func (l *TodoList) Validate() error {
 	if l.Name == "" {
 		return fmt.Errorf("todo list name cannot be empty")
