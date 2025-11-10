@@ -75,7 +75,7 @@ func (t *Task) SetDueDate(d time.Time) {
 	t.UpdatedAt = time.Now()
 }
 
-// AddTag appends a tag if it is not already present.
+// AddTag appends tag to the task if it is not already present.
 func (t *Task) AddTag(tag string) {
 	for _, existing := range t.Tags {
 		if existing == tag {
