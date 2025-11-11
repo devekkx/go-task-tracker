@@ -74,7 +74,7 @@ func (s *Store) save() error {
 	return nil
 }
 
-// DataPath returns the path to the backing JSON file.
+// DataPath returns the absolute path to the backing JSON file.
 func (s *Store) DataPath() string { return s.path }
 
 // AddTask persists a new task.
