@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-// generateID creates a random prefixed identifier.
+// generateID creates a random hex-encoded prefixed identifier.
 func generateID(prefix string) string {
 	b := make([]byte, 4)
 	_, _ = rand.Read(b)
