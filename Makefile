@@ -1,5 +1,7 @@
 BINARY_NAME=tracker
 BUILD_DIR=./bin
+MAIN_PKG=.
+
 
 .PHONY: build clean
 
