@@ -7,7 +7,7 @@ MAIN_PKG=.
 
 build:
 	@mkdir -p $(BUILD_DIR)
-	go build -o $(BUILD_DIR)/$(BINARY_NAME) .
+	go build -ldflags="-s -w" -o $(BUILD_DIR)/$(BINARY_NAME) .
 
 clean:
 	rm -rf $(BUILD_DIR)
