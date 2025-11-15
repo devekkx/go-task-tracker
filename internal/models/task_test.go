@@ -1,0 +1,72 @@
+package models_test
+
+import (
+	"testing"
+	"time"
+
+	"github.com/devekkx/go-task-tracker/internal/models"
+)
+
+func TestNewTask_defaults(t *testing.T) {
+	task := models.NewTask("Write tests", "", models.PriorityMedium)
+	if task.Title != "Write tests" {
+		t.Errorf("expected title 'Write tests', got %q", task.Title)
+	}
+	if task.Status != models.StatusPending {
+		t.Errorf("expected status pending, got %q", task.Status)
+	}
+	if task.Priority != models.PriorityMedium {
+		t.Errorf("expected priority medium, got %q", task.Priority)
+	}
+	if task.ID == "" {
+		t.Error("expected non-empty ID")
+	}
+}
+
+func TestTask_MarkDone(t *testing.T) {
+	task := models.NewTask("Test", "", models.PriorityLow)
+	task.MarkDone()
+	if task.Status != models.StatusDone {
+		t.Errorf("expected done, got %q", task.Status)
+	}
+}
+
+func TestTask_IsOverdue(t *testing.T) {
+	task := models.NewTask("Old task", "", models.PriorityHigh)
+	past := time.Now().Add(-24 * time.Hour)
+	task.SetDueDate(past)
+	if !task.IsOverdue() {
+		t.Error("expected task to be overdue")
+	}
+	task.MarkDone()
+	if task.IsOverdue() {
+		t.Error("done task should not be overdue")
+	}
+}
+
+func TestTask_AddTag(t *testing.T) {
+	task := models.NewTask("Tagged", "", models.PriorityLow)
+	task.AddTag("work")
+	task.AddTag("work") // duplicate
+	if len(task.Tags) != 1 {
+		t.Errorf("expected 1 tag, got %d", len(task.Tags))
+	}
+}
+
+func TestTask_Validate(t *testing.T) {
+	task := models.NewTask("", "", models.PriorityLow)
+	if err := task.Validate(); err == nil {
+		t.Error("expected error for empty title")
+	}
+}
+
+func TestValidPriority(t *testing.T) {
+	for _, valid := range []string{"low", "medium", "high"} {
+		if _, err := models.ValidPriority(valid); err != nil {
+			t.Errorf("expected %q to be valid: %v", valid, err)
+		}
+	}
+	if _, err := models.ValidPriority("urgent"); err == nil {
+		t.Error("expected error for invalid priority")
+	}
+}
