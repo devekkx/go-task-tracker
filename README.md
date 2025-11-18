@@ -10,6 +10,15 @@ A fast, offline-first CLI tool for managing tasks and todo lists.
 - Colorized table output
 - Local JSON storage at `~/.task-tracker/`
 
+## Usage
+
+```bash
+tracker task add "Fix the bug" --priority high --due 2025-12-01
+tracker task list --status pending
+tracker todo create "Shopping"
+tracker todo add <list-id> "Buy milk"
+```
+
 ## Installation
 
 ```bash
