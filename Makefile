@@ -14,3 +14,6 @@ clean:
 
 test:
 	go test -v -race ./...
+
+lint:
+	go vet ./...
