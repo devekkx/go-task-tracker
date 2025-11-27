@@ -20,7 +20,7 @@ Examples:
   tracker todo create "Weekend Tasks"`,
 }
 
-// Execute starts the root command
+// Execute launches the root command
 // Execute runs the root command
 func Execute() {
 
