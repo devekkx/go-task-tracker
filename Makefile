@@ -17,3 +17,6 @@ test:
 
 lint:
 	go vet ./...
+
+help:
+	@echo 'Available targets: build clean test lint'
