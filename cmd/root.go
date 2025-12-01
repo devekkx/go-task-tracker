@@ -31,6 +31,7 @@ func Execute() {
 }
 
 func init() {
+	rootCmd.PersistentFlags().Bool("no-color", false, "Disable color output")
 	rootCmd.AddCommand(taskCmd)
 	rootCmd.AddCommand(todoCmd)
 	rootCmd.AddCommand(versionCmd)
