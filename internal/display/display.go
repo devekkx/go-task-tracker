@@ -22,7 +22,7 @@ var (
 	boldColor    = color.New(color.Bold)
 )
 
-// Success renders a success message
+// Success outputs a success message
 // Success prints a success message
 func Success(format string, args ...any) {
 	successColor.Fprintf(os.Stdout, "✓ "+format+"\n", args...)
