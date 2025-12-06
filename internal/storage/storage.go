@@ -132,7 +132,7 @@ type FilterOptions struct {
 
 // ListTasks returns tasks matching the given filter options.
 func (s *Store) ListTasks(opts FilterOptions) []models.Task {
-	result := make([]models.Task, 0)
+	result := make([]models.Task, 0, len(s.Tasks))
 	for _, t := range s.Tasks {
 		if matchesFilter(t, opts) {
 			result = append(result, t)
