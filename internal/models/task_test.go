@@ -70,3 +70,10 @@ func TestValidPriority(t *testing.T) {
 		t.Error("expected error for invalid priority")
 	}
 }
+
+func TestTask_DaysUntilDue_unset(t *testing.T) {
+	task := models.NewTask("No due", "", models.PriorityLow)
+	if task.DaysUntilDue() != -1 {
+		t.Error("expected -1 for unset due date")
+	}
+}
