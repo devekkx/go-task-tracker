@@ -69,6 +69,7 @@ var (
 
 var taskListCmd = &cobra.Command{
 	Use:   "list",
+	Aliases: []string{"ls"},
 	Short: "List tasks",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		store, err := storage.New()
