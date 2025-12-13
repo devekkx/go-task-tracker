@@ -32,6 +32,7 @@ var todoCreateCmd = &cobra.Command{
 
 var todoListCmd = &cobra.Command{
 	Use:   "list",
+	Aliases: []string{"ls"},
 	Short: "List all todo lists",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		store, err := storage.New()
