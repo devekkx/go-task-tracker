@@ -20,3 +20,6 @@ lint:
 
 help:
 	@echo 'Available targets: build clean test lint'
+
+install: build
+	cp $(BUILD_DIR)/$(BINARY_NAME) $(shell go env GOPATH)/bin/
