@@ -23,3 +23,6 @@ help:
 
 install: build
 	cp $(BUILD_DIR)/$(BINARY_NAME) $(shell go env GOPATH)/bin/
+
+test-cover:
+	go test -cover ./...
