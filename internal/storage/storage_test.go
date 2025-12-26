@@ -89,3 +89,17 @@ func TestStore_Persistence(t *testing.T) {
 	}
 	_ = os.Unsetenv("HOME")
 }
+
+func TestStore_UpdateTask(t *testing.T) {
+	s := tempStore(t)
+	task := models.NewTask("Original", "", models.PriorityLow)
+	_ = s.AddTask(task)
+	task.Title = "Updated"
+	if err := s.UpdateTask(task); err != nil {
+		t.Fatalf("UpdateTask: %v", err)
+	}
+	got, _ := s.GetTask(task.ID)
+	if got.Title != "Updated" {
+		t.Errorf("expected 'Updated', got %q", got.Title)
+	}
+}
