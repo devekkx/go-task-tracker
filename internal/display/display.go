@@ -23,7 +23,6 @@ var (
 )
 
 // Success prints a success message
-// Success prints a success message
 func Success(format string, args ...any) {
 	successColor.Fprintf(os.Stdout, "✓ "+format+"\n", args...)
 }
