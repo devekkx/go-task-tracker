@@ -94,6 +94,9 @@ func PrintTask(t *models.Task) {
 	if len(t.Tags) > 0 {
 		fmt.Printf("  %-16s %s\n", "Tags:", strings.Join(t.Tags, ", "))
 	}
+	if t.Archived {
+		warnColor.Printf("  %-16s %s\n", "Archived:", "yes")
+	}
 	fmt.Printf("  %-16s %s\n", "Created:", t.CreatedAt.Format("2006-01-02 15:04"))
 	fmt.Printf("  %-16s %s\n", "Updated:", t.UpdatedAt.Format("2006-01-02 15:04"))
 	fmt.Println()
