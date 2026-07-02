@@ -128,3 +128,25 @@ func TestStore_ArchiveTask(t *testing.T) {
 		t.Errorf("expected 1 archived task, got %d", len(archivedTasks))
 	}
 }
+
+func TestStore_UnarchiveTask(t *testing.T) {
+	s := tempStore(t)
+	task := models.NewTask("Restore me", "", models.PriorityMedium)
+	_ = s.AddTask(task)
+	_ = s.ArchiveTask(task.ID)
+
+	if err := s.UnarchiveTask(task.ID); err != nil {
+		t.Fatalf("UnarchiveTask: %v", err)
+	}
+
+	tasks := s.ListTasks(storage.FilterOptions{})
+	found := false
+	for _, tsk := range tasks {
+		if tsk.ID == task.ID {
+			found = true
+		}
+	}
+	if !found {
+		t.Error("unarchived task should appear in default list")
+	}
+}
