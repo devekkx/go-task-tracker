@@ -88,7 +88,7 @@ func (t *Task) AddTag(tag string) {
 	t.UpdatedAt = time.Now()
 }
 
-// IsOverdue returns true when the task has a past due date and is not done.
+// IsOverdue reports whether the task is past its due date and not yet completed.
 func (t *Task) IsOverdue() bool {
 	if t.DueDate == nil {
 		return false
