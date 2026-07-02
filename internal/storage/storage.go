@@ -257,6 +257,9 @@ func (s *Store) GetStats() Stats {
 		if t.IsOverdue() {
 			stats.OverdueTasks++
 		}
+		if t.Archived {
+			stats.ArchivedTasks++
+		}
 	}
 	for _, l := range s.TodoLists {
 		stats.TotalTodoItems += l.TotalItems()
