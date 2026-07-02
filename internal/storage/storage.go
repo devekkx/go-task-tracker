@@ -255,3 +255,23 @@ func (s *Store) GetStats() Stats {
 	}
 	return stats
 }
+
+// ArchiveTask marks the given task as archived.
+func (s *Store) ArchiveTask(id string) error {
+	task, err := s.GetTask(id)
+	if err != nil {
+		return err
+	}
+	task.Archive()
+	return s.UpdateTask(task)
+}
+
+// UnarchiveTask restores a previously archived task.
+func (s *Store) UnarchiveTask(id string) error {
+	task, err := s.GetTask(id)
+	if err != nil {
+		return err
+	}
+	task.Unarchive()
+	return s.UpdateTask(task)
+}
