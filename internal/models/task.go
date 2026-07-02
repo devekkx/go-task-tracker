@@ -2,6 +2,7 @@ package models
 
 import (
 	"fmt"
+	"strings"
 	"time"
 )
 
@@ -105,7 +106,7 @@ func (t *Task) DaysUntilDue() int {
 
 // Validate checks that the task has required fields
 func (t *Task) Validate() error {
-	if t.Title == "" {
+	if strings.TrimSpace(t.Title) == "" {
 		return fmt.Errorf("task title cannot be empty")
 	}
 	switch t.Priority {
