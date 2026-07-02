@@ -65,6 +65,7 @@ var (
 	listPriority string
 	listTag      string
 	listSearch   string
+	listArchived bool
 )
 
 var taskListCmd = &cobra.Command{
@@ -76,12 +77,17 @@ var taskListCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
-		tasks := store.ListTasks(storage.FilterOptions{
+		opts := storage.FilterOptions{
 			Status:   listStatus,
 			Priority: listPriority,
 			Tag:      listTag,
 			Search:   listSearch,
-		})
+		}
+		if listArchived {
+			t := true
+			opts.Archived = &t
+		}
+		tasks := store.ListTasks(opts)
 		display.PrintTasks(tasks)
 		return nil
 	},
@@ -272,6 +278,7 @@ func init() {
 	taskListCmd.Flags().StringVarP(&listPriority, "priority", "p", "", "Filter by priority")
 	taskListCmd.Flags().StringVarP(&listTag, "tag", "t", "", "Filter by tag")
 	taskListCmd.Flags().StringVarP(&listSearch, "search", "q", "", "Search title and description")
+	taskListCmd.Flags().BoolVar(&listArchived, "archived", false, "Show archived tasks instead")
 	taskCmd.AddCommand(taskAddCmd)
 	taskCmd.AddCommand(taskListCmd)
 	taskCmd.AddCommand(taskShowCmd)
