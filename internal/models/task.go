@@ -96,7 +96,7 @@ func (t *Task) IsOverdue() bool {
 	return time.Now().After(*t.DueDate) && t.Status != StatusDone
 }
 
-// DaysUntilDue returns the number of days until the due date, or -1 if unset.
+// DaysUntilDue returns whole days remaining until the due date, or -1 if no due date is set.
 func (t *Task) DaysUntilDue() int {
 	if t.DueDate == nil {
 		return -1
