@@ -164,3 +164,15 @@ func (t *Task) RemoveTag(tag string) {
 		t.UpdatedAt = time.Now()
 	}
 }
+
+// Archive marks the task as archived.
+func (t *Task) Archive() {
+	t.Archived = true
+	t.UpdatedAt = time.Now()
+}
+
+// Unarchive restores an archived task.
+func (t *Task) Unarchive() {
+	t.Archived = false
+	t.UpdatedAt = time.Now()
+}
