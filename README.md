@@ -49,3 +49,13 @@ make install
 ## License
 
 MIT
+
+## Archive
+
+Archive tasks you want to keep but hide from the default view:
+
+```bash
+tracker task archive <id>    # archive a task
+tracker task unarchive <id>  # restore an archived task
+tracker task list --archived # list archived tasks
+```
