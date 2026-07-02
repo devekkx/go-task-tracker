@@ -149,3 +149,17 @@ func (t *Task) HasTag(tag string) bool {
 	}
 	return false
 }
+
+// RemoveTag removes tag from the task if present.
+func (t *Task) RemoveTag(tag string) {
+	filtered := t.Tags[:0]
+	for _, existing := range t.Tags {
+		if existing != tag {
+			filtered = append(filtered, existing)
+		}
+	}
+	if len(filtered) != len(t.Tags) {
+		t.Tags = filtered
+		t.UpdatedAt = time.Now()
+	}
+}
