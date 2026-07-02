@@ -21,7 +21,6 @@ Examples:
 }
 
 // Execute runs the root command
-// Execute runs the root command
 func Execute() {
 
 	if err := rootCmd.Execute(); err != nil {
