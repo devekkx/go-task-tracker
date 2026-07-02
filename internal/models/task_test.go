@@ -116,3 +116,10 @@ func TestTask_ArchiveUnarchive(t *testing.T) {
 		t.Error("expected task to be unarchived")
 	}
 }
+
+func TestTask_Validate_whitespaceTitle(t *testing.T) {
+	task := models.NewTask("   ", "", models.PriorityLow)
+	if err := task.Validate(); err == nil {
+		t.Error("expected error for whitespace-only title")
+	}
+}
