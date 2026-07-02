@@ -62,7 +62,6 @@ func (s *Store) load() error {
 }
 
 // save writes the store to disk
-// save writes the store to disk
 func (s *Store) save() error {
 	data, err := json.MarshalIndent(s, "", "  ")
 	if err != nil {
