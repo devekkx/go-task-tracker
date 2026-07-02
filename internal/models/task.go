@@ -139,3 +139,13 @@ func ValidStatus(s string) (Status, error) {
 		return "", fmt.Errorf("invalid status %q: must be pending, in-progress, or done", s)
 	}
 }
+
+// HasTag reports whether the task has the given tag.
+func (t *Task) HasTag(tag string) bool {
+	for _, existing := range t.Tags {
+		if existing == tag {
+			return true
+		}
+	}
+	return false
+}
