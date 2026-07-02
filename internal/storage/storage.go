@@ -233,6 +233,7 @@ type Stats struct {
 	InProgressTasks int
 	DoneTasks       int
 	OverdueTasks    int
+	ArchivedTasks   int
 	TotalTodoLists  int
 	TotalTodoItems  int
 	DoneTodoItems   int
