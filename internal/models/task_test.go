@@ -101,3 +101,18 @@ func TestTask_RemoveTag(t *testing.T) {
 		t.Error("expected urgent tag to remain")
 	}
 }
+
+func TestTask_ArchiveUnarchive(t *testing.T) {
+	task := models.NewTask("Archive me", "", models.PriorityMedium)
+	if task.Archived {
+		t.Error("new task should not be archived")
+	}
+	task.Archive()
+	if !task.Archived {
+		t.Error("expected task to be archived")
+	}
+	task.Unarchive()
+	if task.Archived {
+		t.Error("expected task to be unarchived")
+	}
+}
