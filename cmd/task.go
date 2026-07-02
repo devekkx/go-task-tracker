@@ -228,6 +228,41 @@ var taskUpdateCmd = &cobra.Command{
 	},
 }
 
+
+var taskArchiveCmd = &cobra.Command{
+	Use:   "archive <id>",
+	Short: "Archive a task",
+	Args:  cobra.ExactArgs(1),
+	RunE: func(cmd *cobra.Command, args []string) error {
+		store, err := storage.New()
+		if err != nil {
+			return err
+		}
+		if err := store.ArchiveTask(args[0]); err != nil {
+			return err
+		}
+		display.Success("Task archived: %s", args[0])
+		return nil
+	},
+}
+
+var taskUnarchiveCmd = &cobra.Command{
+	Use:   "unarchive <id>",
+	Short: "Restore an archived task",
+	Args:  cobra.ExactArgs(1),
+	RunE: func(cmd *cobra.Command, args []string) error {
+		store, err := storage.New()
+		if err != nil {
+			return err
+		}
+		if err := store.UnarchiveTask(args[0]); err != nil {
+			return err
+		}
+		display.Success("Task unarchived: %s", args[0])
+		return nil
+	},
+}
+
 func init() {
 	taskAddCmd.Flags().StringVarP(&addDesc, "desc", "d", "", "Task description")
 	taskAddCmd.Flags().StringVarP(&addPriority, "priority", "p", "medium", "Priority: low, medium, high")
