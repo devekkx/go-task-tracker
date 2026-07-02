@@ -103,3 +103,28 @@ func TestStore_UpdateTask(t *testing.T) {
 		t.Errorf("expected 'Updated', got %q", got.Title)
 	}
 }
+
+func TestStore_ArchiveTask(t *testing.T) {
+	s := tempStore(t)
+	task := models.NewTask("Archive me", "", models.PriorityLow)
+	_ = s.AddTask(task)
+
+	if err := s.ArchiveTask(task.ID); err != nil {
+		t.Fatalf("ArchiveTask: %v", err)
+	}
+
+	// archived task should not appear in default list
+	tasks := s.ListTasks(storage.FilterOptions{})
+	for _, tsk := range tasks {
+		if tsk.ID == task.ID {
+			t.Error("archived task should not appear in default list")
+		}
+	}
+
+	// should appear when explicitly requesting archived
+	archived := true
+	archivedTasks := s.ListTasks(storage.FilterOptions{Archived: &archived})
+	if len(archivedTasks) != 1 {
+		t.Errorf("expected 1 archived task, got %d", len(archivedTasks))
+	}
+}
