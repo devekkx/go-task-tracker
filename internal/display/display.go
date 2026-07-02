@@ -78,24 +78,24 @@ func PrintTasks(tasks []models.Task) {
 func PrintTask(t *models.Task) {
 	headerColor.Printf("\n  Task: %s\n", t.Title)
 	fmt.Println(strings.Repeat("─", 50))
-	fmt.Printf("  %-14s %s\n", "ID:", t.ID)
-	fmt.Printf("  %-14s %s\n", "Status:", statusStr(t.Status))
-	fmt.Printf("  %-14s %s\n", "Priority:", priorityStr(t.Priority))
+	fmt.Printf("  %-16s %s\n", "ID:", t.ID)
+	fmt.Printf("  %-16s %s\n", "Status:", statusStr(t.Status))
+	fmt.Printf("  %-16s %s\n", "Priority:", priorityStr(t.Priority))
 	if t.Description != "" {
-		fmt.Printf("  %-14s %s\n", "Description:", t.Description)
+		fmt.Printf("  %-16s %s\n", "Description:", t.Description)
 	}
 	if t.DueDate != nil {
 		due := t.DueDate.Format("2006-01-02")
 		if t.IsOverdue() {
 			due = warnColor.Sprint(due + " (overdue)")
 		}
-		fmt.Printf("  %-14s %s\n", "Due Date:", due)
+		fmt.Printf("  %-16s %s\n", "Due Date:", due)
 	}
 	if len(t.Tags) > 0 {
-		fmt.Printf("  %-14s %s\n", "Tags:", strings.Join(t.Tags, ", "))
+		fmt.Printf("  %-16s %s\n", "Tags:", strings.Join(t.Tags, ", "))
 	}
-	fmt.Printf("  %-14s %s\n", "Created:", t.CreatedAt.Format("2006-01-02 15:04"))
-	fmt.Printf("  %-14s %s\n", "Updated:", t.UpdatedAt.Format("2006-01-02 15:04"))
+	fmt.Printf("  %-16s %s\n", "Created:", t.CreatedAt.Format("2006-01-02 15:04"))
+	fmt.Printf("  %-16s %s\n", "Updated:", t.UpdatedAt.Format("2006-01-02 15:04"))
 	fmt.Println()
 }
 
