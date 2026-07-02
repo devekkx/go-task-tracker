@@ -167,6 +167,9 @@ func PrintStats(stats storage.Stats) {
 		fmt.Printf("    %-20s ", "Overdue:")
 		warnColor.Printf("%d\n", stats.OverdueTasks)
 	}
+	if stats.ArchivedTasks > 0 {
+		fmt.Printf("    %-20s %d\n", "Archived:", stats.ArchivedTasks)
+	}
 	boldColor.Println("\n  Todo Lists:")
 	fmt.Printf("    %-20s %d\n", "Total Lists:", stats.TotalTodoLists)
 	fmt.Printf("    %-20s %d\n", "Total Items:", stats.TotalTodoItems)
