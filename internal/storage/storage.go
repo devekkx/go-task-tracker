@@ -127,6 +127,7 @@ type FilterOptions struct {
 	Priority string
 	Tag      string
 	Search   string
+	Archived *bool // nil = exclude archived, true = only archived, false = all
 }
 
 // ListTasks returns tasks matching the given filter options.
