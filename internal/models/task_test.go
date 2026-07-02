@@ -77,3 +77,27 @@ func TestTask_DaysUntilDue_unset(t *testing.T) {
 		t.Error("expected -1 for unset due date")
 	}
 }
+
+func TestTask_HasTag(t *testing.T) {
+	task := models.NewTask("Tag test", "", models.PriorityLow)
+	task.AddTag("work")
+	if !task.HasTag("work") {
+		t.Error("expected HasTag to return true for existing tag")
+	}
+	if task.HasTag("personal") {
+		t.Error("expected HasTag to return false for missing tag")
+	}
+}
+
+func TestTask_RemoveTag(t *testing.T) {
+	task := models.NewTask("Remove tag", "", models.PriorityLow)
+	task.AddTag("work")
+	task.AddTag("urgent")
+	task.RemoveTag("work")
+	if task.HasTag("work") {
+		t.Error("expected work tag to be removed")
+	}
+	if !task.HasTag("urgent") {
+		t.Error("expected urgent tag to remain")
+	}
+}
