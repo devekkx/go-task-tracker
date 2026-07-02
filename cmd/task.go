@@ -285,4 +285,6 @@ func init() {
 	taskUpdateCmd.Flags().StringVar(&updateDue, "due", "", "New due date (YYYY-MM-DD)")
 	taskUpdateCmd.Flags().StringVarP(&updateTags, "tags", "t", "", "New tags (replaces existing)")
 	taskCmd.AddCommand(taskUpdateCmd)
+	taskCmd.AddCommand(taskArchiveCmd)
+	taskCmd.AddCommand(taskUnarchiveCmd)
 }
