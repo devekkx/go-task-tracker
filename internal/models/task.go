@@ -177,3 +177,12 @@ func (t *Task) Unarchive() {
 	t.Archived = false
 	t.UpdatedAt = time.Now()
 }
+
+// ClearTags removes all tags from the task.
+func (t *Task) ClearTags() {
+	if len(t.Tags) == 0 {
+		return
+	}
+	t.Tags = []string{}
+	t.UpdatedAt = time.Now()
+}
