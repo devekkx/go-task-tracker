@@ -27,7 +27,7 @@ var (
 
 var taskAddCmd = &cobra.Command{
 	Use:   "add <title>",
-	Short: "Add a new task",
+	Short: "Add a task",
 	Args:  cobra.MinimumNArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		title := strings.Join(args, " ")
@@ -71,7 +71,7 @@ var (
 var taskListCmd = &cobra.Command{
 	Use:   "list",
 	Aliases: []string{"ls"},
-	Short: "List tasks",
+	Short: "List all tasks",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		store, err := storage.New()
 		if err != nil {
@@ -95,7 +95,7 @@ var taskListCmd = &cobra.Command{
 
 var taskShowCmd = &cobra.Command{
 	Use:   "show <id>",
-	Short: "Show task details",
+	Short: "Show details of a task",
 	Args:  cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		store, err := storage.New()
