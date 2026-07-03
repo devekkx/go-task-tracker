@@ -237,6 +237,28 @@ var taskUpdateCmd = &cobra.Command{
 }
 
 
+
+var taskClearDoneCmd = &cobra.Command{
+	Use:   "clear-done",
+	Short: "Remove all completed tasks",
+	RunE: func(cmd *cobra.Command, args []string) error {
+		store, err := storage.New()
+		if err != nil {
+			return err
+		}
+		n, err := store.ClearDoneTasks()
+		if err != nil {
+			return err
+		}
+		if n == 0 {
+			display.Info("No completed tasks to remove.")
+		} else {
+			display.Success("Removed %d completed task(s).", n)
+		}
+		return nil
+	},
+}
+
 var taskArchiveCmd = &cobra.Command{
 	Use:   "archive <id>",
 	Short: "Archive a task",
@@ -295,6 +317,7 @@ func init() {
 	taskUpdateCmd.Flags().StringVar(&updateDue, "due", "", "New due date (YYYY-MM-DD)")
 	taskUpdateCmd.Flags().StringVarP(&updateTags, "tags", "t", "", "New tags (replaces existing)")
 	taskCmd.AddCommand(taskUpdateCmd)
+	taskCmd.AddCommand(taskClearDoneCmd)
 	taskCmd.AddCommand(taskArchiveCmd)
 	taskCmd.AddCommand(taskUnarchiveCmd)
 }
