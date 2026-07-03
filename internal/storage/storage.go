@@ -140,9 +140,9 @@ func (s *Store) ListTasks(opts FilterOptions) []models.Task {
 			result = append(result, t)
 		}
 	}
+	sortTasks(result, opts.SortBy)
 	return result
 }
-
 
 func sortTasks(tasks []models.Task, by string) {
 	switch by {
