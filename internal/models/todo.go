@@ -136,3 +136,9 @@ func (l *TodoList) Validate() error {
 	}
 	return nil
 }
+
+// SetDescription updates the list description.
+func (l *TodoList) SetDescription(desc string) {
+	l.Description = desc
+	l.UpdatedAt = time.Now()
+}
