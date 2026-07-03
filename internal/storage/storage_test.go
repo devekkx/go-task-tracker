@@ -221,3 +221,15 @@ func TestStore_ExportImportRoundtrip(t *testing.T) {
 		t.Errorf("expected 1 imported list, got %d", lists)
 	}
 }
+
+func TestStore_SearchTodoLists(t *testing.T) {
+	s := tempStore(t)
+	_ = s.AddTodoList(models.NewTodoList("Work tasks"))
+	_ = s.AddTodoList(models.NewTodoList("Personal tasks"))
+	_ = s.AddTodoList(models.NewTodoList("Grocery list"))
+
+	results := s.SearchTodoLists("tasks")
+	if len(results) != 2 {
+		t.Errorf("expected 2 results, got %d", len(results))
+	}
+}
