@@ -59,3 +59,12 @@ tracker task archive <id>    # archive a task
 tracker task unarchive <id>  # restore an archived task
 tracker task list --archived # list archived tasks
 ```
+
+## Export & Import
+
+Back up or migrate your data with JSON export and import (v1.1.0):
+
+```bash
+tracker export output.json
+tracker import backup.json
+```
