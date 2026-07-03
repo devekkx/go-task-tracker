@@ -150,3 +150,18 @@ func TestStore_UnarchiveTask(t *testing.T) {
 		t.Error("unarchived task should appear in default list")
 	}
 }
+
+func TestStore_ListTasks_sortByTitle(t *testing.T) {
+	s := tempStore(t)
+	_ = s.AddTask(models.NewTask("Zebra task", "", models.PriorityLow))
+	_ = s.AddTask(models.NewTask("Apple task", "", models.PriorityLow))
+	_ = s.AddTask(models.NewTask("Mango task", "", models.PriorityLow))
+
+	tasks := s.ListTasks(storage.FilterOptions{SortBy: "title"})
+	if len(tasks) != 3 {
+		t.Fatalf("expected 3 tasks, got %d", len(tasks))
+	}
+	if tasks[0].Title != "Apple task" {
+		t.Errorf("expected first task to be Apple task, got %q", tasks[0].Title)
+	}
+}
