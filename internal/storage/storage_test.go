@@ -165,3 +165,15 @@ func TestStore_ListTasks_sortByTitle(t *testing.T) {
 		t.Errorf("expected first task to be Apple task, got %q", tasks[0].Title)
 	}
 }
+
+func TestStore_ListTasks_sortByPriority(t *testing.T) {
+	s := tempStore(t)
+	_ = s.AddTask(models.NewTask("Low task", "", models.PriorityLow))
+	_ = s.AddTask(models.NewTask("High task", "", models.PriorityHigh))
+	_ = s.AddTask(models.NewTask("Med task", "", models.PriorityMedium))
+
+	tasks := s.ListTasks(storage.FilterOptions{SortBy: "priority"})
+	if tasks[0].Title != "High task" {
+		t.Errorf("expected first task to be High task, got %q", tasks[0].Title)
+	}
+}
