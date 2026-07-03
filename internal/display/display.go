@@ -177,7 +177,7 @@ func PrintStats(stats storage.Stats) {
 	fmt.Printf("    %-20s %d\n", "Total Lists:", stats.TotalTodoLists)
 	fmt.Printf("    %-20s %d\n", "Total Items:", stats.TotalTodoItems)
 	fmt.Printf("    %-20s %d\n", "Done Items:", stats.DoneTodoItems)
-	fmt.Printf("    %-20s %d\n", "Pending Items:", stats.TotalTodoItems-stats.DoneTodoItems)
+	fmt.Printf("    %-20s %d\n", "Pending Items:", stats.PendingTodoItems)
 	fmt.Println()
 }
 
