@@ -16,11 +16,12 @@ type TodoItem struct {
 
 // TodoList groups related TodoItems.
 type TodoList struct {
-	ID        string     `json:"id"`
-	Name      string     `json:"name"`
-	Items     []TodoItem `json:"items"`
-	CreatedAt time.Time  `json:"created_at"`
-	UpdatedAt time.Time  `json:"updated_at"`
+	ID          string     `json:"id"`
+	Name        string     `json:"name"`
+	Description string     `json:"description,omitempty"`
+	Items       []TodoItem `json:"items"`
+	CreatedAt   time.Time  `json:"created_at"`
+	UpdatedAt   time.Time  `json:"updated_at"`
 }
 
 // NewTodoList creates a TodoList with the given name.
