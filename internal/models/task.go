@@ -186,3 +186,8 @@ func (t *Task) ClearTags() {
 	t.Tags = []string{}
 	t.UpdatedAt = time.Now()
 }
+
+// TagsCount returns the number of tags on the task.
+func (t *Task) TagsCount() int {
+	return len(t.Tags)
+}
