@@ -318,3 +318,21 @@ func (s *Store) UnarchiveTask(id string) error {
 	task.Unarchive()
 	return s.UpdateTask(task)
 }
+
+// ClearDoneTasks removes all tasks with status done and returns the count removed.
+func (s *Store) ClearDoneTasks() (int, error) {
+	remaining := make([]models.Task, 0, len(s.Tasks))
+	removed := 0
+	for _, t := range s.Tasks {
+		if t.Status == models.StatusDone {
+			removed++
+		} else {
+			remaining = append(remaining, t)
+		}
+	}
+	if removed == 0 {
+		return 0, nil
+	}
+	s.Tasks = remaining
+	return removed, s.save()
+}
