@@ -123,7 +123,7 @@ func (s *Store) DeleteTask(id string) error {
 }
 
 // FilterOptions controls which tasks ListTasks returns.
-// All fields are optional; empty string means no filter.
+// All string fields are optional; empty string means no filter on that dimension.
 type FilterOptions struct {
 	Status   string
 	Priority string
