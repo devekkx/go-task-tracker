@@ -177,3 +177,24 @@ func TestStore_ListTasks_sortByPriority(t *testing.T) {
 		t.Errorf("expected first task to be High task, got %q", tasks[0].Title)
 	}
 }
+
+func TestStore_ClearDoneTasks(t *testing.T) {
+	s := tempStore(t)
+	t1 := models.NewTask("Pending", "", models.PriorityLow)
+	t2 := models.NewTask("Done", "", models.PriorityLow)
+	t2.MarkDone()
+	_ = s.AddTask(t1)
+	_ = s.AddTask(t2)
+
+	n, err := s.ClearDoneTasks()
+	if err != nil {
+		t.Fatalf("ClearDoneTasks: %v", err)
+	}
+	if n != 1 {
+		t.Errorf("expected 1 removed, got %d", n)
+	}
+	tasks := s.ListTasks(storage.FilterOptions{})
+	if len(tasks) != 1 {
+		t.Errorf("expected 1 remaining task, got %d", len(tasks))
+	}
+}
