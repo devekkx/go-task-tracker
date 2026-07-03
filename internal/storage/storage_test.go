@@ -198,3 +198,26 @@ func TestStore_ClearDoneTasks(t *testing.T) {
 		t.Errorf("expected 1 remaining task, got %d", len(tasks))
 	}
 }
+
+func TestStore_ExportImportRoundtrip(t *testing.T) {
+	s := tempStore(t)
+	_ = s.AddTask(models.NewTask("Export me", "desc", models.PriorityHigh))
+	_ = s.AddTodoList(models.NewTodoList("My List"))
+
+	exportPath := t.TempDir() + "/export.json"
+	if err := s.ExportJSON(exportPath); err != nil {
+		t.Fatalf("ExportJSON: %v", err)
+	}
+
+	s2 := tempStore(t)
+	tasks, lists, err := s2.ImportJSON(exportPath)
+	if err != nil {
+		t.Fatalf("ImportJSON: %v", err)
+	}
+	if tasks != 1 {
+		t.Errorf("expected 1 imported task, got %d", tasks)
+	}
+	if lists != 1 {
+		t.Errorf("expected 1 imported list, got %d", lists)
+	}
+}
