@@ -142,3 +142,13 @@ func (l *TodoList) SetDescription(desc string) {
 	l.Description = desc
 	l.UpdatedAt = time.Now()
 }
+
+// Rename updates the list name.
+func (l *TodoList) Rename(name string) error {
+	if name == "" {
+		return fmt.Errorf("list name cannot be empty")
+	}
+	l.Name = name
+	l.UpdatedAt = time.Now()
+	return nil
+}
