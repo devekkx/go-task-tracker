@@ -30,3 +30,7 @@ test-cover:
 .PHONY: coverage
 coverage:
 	go test -cover ./...
+
+.PHONY: vet
+vet:
+	go vet ./...
