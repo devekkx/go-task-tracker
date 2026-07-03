@@ -26,3 +26,7 @@ install: build
 
 test-cover:
 	go test -cover ./...
+
+.PHONY: coverage
+coverage:
+	go test -cover ./...
