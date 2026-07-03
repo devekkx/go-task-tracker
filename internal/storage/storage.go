@@ -387,3 +387,15 @@ func (s *Store) ImportJSON(path string) (int, int, error) {
 	}
 	return importedTasks, importedLists, s.save()
 }
+
+// SearchTodoLists returns todo lists whose name contains query (case-insensitive).
+func (s *Store) SearchTodoLists(query string) []models.TodoList {
+	q := strings.ToLower(query)
+	result := make([]models.TodoList, 0)
+	for _, l := range s.TodoLists {
+		if strings.Contains(strings.ToLower(l.Name), q) {
+			result = append(result, l)
+		}
+	}
+	return result
+}
