@@ -120,7 +120,7 @@ func PrintTodoLists(lists []models.TodoList) {
 	)
 	for _, l := range lists {
 		table.Append([]string{
-			truncate(l.ID, 16),
+			truncate(l.ID, 18),
 			truncate(l.Name, 30),
 			fmt.Sprintf("%d", l.TotalItems()),
 			fmt.Sprintf("%d", l.DoneItems()),
