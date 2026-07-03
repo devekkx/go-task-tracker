@@ -71,3 +71,16 @@ func TestTodoList_SetDescription(t *testing.T) {
 		t.Errorf("expected description to be set, got %q", list.Description)
 	}
 }
+
+func TestTodoList_Rename(t *testing.T) {
+	list := models.NewTodoList("Old Name")
+	if err := list.Rename("New Name"); err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if list.Name != "New Name" {
+		t.Errorf("expected name 'New Name', got %q", list.Name)
+	}
+	if err := list.Rename(""); err == nil {
+		t.Error("expected error for empty name")
+	}
+}
