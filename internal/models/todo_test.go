@@ -63,3 +63,11 @@ func TestTodoList_Progress(t *testing.T) {
 		t.Errorf("expected 50%%, got %.1f%%", list.Progress())
 	}
 }
+
+func TestTodoList_SetDescription(t *testing.T) {
+	list := models.NewTodoList("My List")
+	list.SetDescription("A helpful description")
+	if list.Description != "A helpful description" {
+		t.Errorf("expected description to be set, got %q", list.Description)
+	}
+}
