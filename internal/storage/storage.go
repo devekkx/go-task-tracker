@@ -296,6 +296,7 @@ func (s *Store) GetStats() Stats {
 	for _, l := range s.TodoLists {
 		stats.TotalTodoItems += l.TotalItems()
 		stats.DoneTodoItems += l.DoneItems()
+		stats.PendingTodoItems += l.PendingItems()
 	}
 	return stats
 }
