@@ -267,7 +267,8 @@ type Stats struct {
 	ArchivedTasks   int
 	TotalTodoLists  int
 	TotalTodoItems  int
-	DoneTodoItems   int
+	DoneTodoItems    int
+	PendingTodoItems int
 }
 
 // GetStats computes aggregate statistics across all tasks and todo lists.
