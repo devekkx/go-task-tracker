@@ -143,6 +143,35 @@ func (s *Store) ListTasks(opts FilterOptions) []models.Task {
 	return result
 }
 
+
+func sortTasks(tasks []models.Task, by string) {
+	switch by {
+	case "title":
+		sort.Slice(tasks, func(i, j int) bool {
+			return strings.ToLower(tasks[i].Title) < strings.ToLower(tasks[j].Title)
+		})
+	case "priority":
+		order := map[models.Priority]int{models.PriorityHigh: 0, models.PriorityMedium: 1, models.PriorityLow: 2}
+		sort.Slice(tasks, func(i, j int) bool {
+			return order[tasks[i].Priority] < order[tasks[j].Priority]
+		})
+	case "due":
+		sort.Slice(tasks, func(i, j int) bool {
+			if tasks[i].DueDate == nil {
+				return false
+			}
+			if tasks[j].DueDate == nil {
+				return true
+			}
+			return tasks[i].DueDate.Before(*tasks[j].DueDate)
+		})
+	case "created":
+		sort.Slice(tasks, func(i, j int) bool {
+			return tasks[i].CreatedAt.Before(tasks[j].CreatedAt)
+		})
+	}
+}
+
 func matchesFilter(t models.Task, opts FilterOptions) bool {
 	if opts.Archived == nil {
 		if t.Archived {
