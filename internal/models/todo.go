@@ -152,3 +152,12 @@ func (l *TodoList) Rename(name string) error {
 	l.UpdatedAt = time.Now()
 	return nil
 }
+
+// ItemIDs returns the IDs of all items in the list.
+func (l *TodoList) ItemIDs() []string {
+	ids := make([]string, len(l.Items))
+	for i, item := range l.Items {
+		ids[i] = item.ID
+	}
+	return ids
+}
