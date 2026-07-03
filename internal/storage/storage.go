@@ -348,3 +348,42 @@ func (s *Store) ExportJSON(path string) error {
 	}
 	return nil
 }
+
+// ImportJSON reads tasks and todo lists from a JSON export file,
+// merging them into the current store (skipping duplicate IDs).
+func (s *Store) ImportJSON(path string) (int, int, error) {
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return 0, 0, fmt.Errorf("failed to read import file: %w", err)
+	}
+	var src Store
+	if err := json.Unmarshal(data, &src); err != nil {
+		return 0, 0, fmt.Errorf("failed to parse import file: %w", err)
+	}
+	importedTasks := 0
+	for i := range src.Tasks {
+		if err := src.Tasks[i].Validate(); err != nil {
+			return 0, 0, fmt.Errorf("invalid task in import: %w", err)
+		}
+		duplicate := false
+		for _, existing := range s.Tasks {
+			if existing.ID == src.Tasks[i].ID {
+				duplicate = true
+				break
+			}
+		}
+		if !duplicate {
+			s.Tasks = append(s.Tasks, src.Tasks[i])
+			importedTasks++
+		}
+	}
+	importedLists := 0
+	for i := range src.TodoLists {
+		if err := src.TodoLists[i].Validate(); err != nil {
+			return 0, 0, fmt.Errorf("invalid todo list in import: %w", err)
+		}
+		s.TodoLists = append(s.TodoLists, src.TodoLists[i])
+		importedLists++
+	}
+	return importedTasks, importedLists, s.save()
+}
