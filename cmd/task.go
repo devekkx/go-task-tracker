@@ -66,6 +66,7 @@ var (
 	listTag      string
 	listSearch   string
 	listArchived bool
+	listSort     string
 )
 
 var taskListCmd = &cobra.Command{
@@ -83,6 +84,7 @@ var taskListCmd = &cobra.Command{
 			Tag:      listTag,
 			Search:   listSearch,
 		}
+		opts.SortBy = listSort
 		if listArchived {
 			t := true
 			opts.Archived = &t
@@ -279,6 +281,7 @@ func init() {
 	taskListCmd.Flags().StringVarP(&listTag, "tag", "t", "", "Filter by tag")
 	taskListCmd.Flags().StringVarP(&listSearch, "search", "q", "", "Search title and description")
 	taskListCmd.Flags().BoolVar(&listArchived, "archived", false, "Show archived tasks instead")
+	taskListCmd.Flags().StringVarP(&listSort, "sort", "S", "", "Sort by: title, priority, due, created")
 	taskCmd.AddCommand(taskAddCmd)
 	taskCmd.AddCommand(taskListCmd)
 	taskCmd.AddCommand(taskShowCmd)
