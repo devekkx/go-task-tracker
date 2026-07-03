@@ -336,3 +336,15 @@ func (s *Store) ClearDoneTasks() (int, error) {
 	s.Tasks = remaining
 	return removed, s.save()
 }
+
+// ExportJSON writes the store contents to the given file path as JSON.
+func (s *Store) ExportJSON(path string) error {
+	data, err := json.MarshalIndent(s, "", "  ")
+	if err != nil {
+		return fmt.Errorf("failed to marshal data: %w", err)
+	}
+	if err := os.WriteFile(path, data, 0644); err != nil {
+		return fmt.Errorf("failed to write export file: %w", err)
+	}
+	return nil
+}
