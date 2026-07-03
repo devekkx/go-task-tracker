@@ -123,3 +123,15 @@ func TestTask_Validate_whitespaceTitle(t *testing.T) {
 		t.Error("expected error for whitespace-only title")
 	}
 }
+
+func TestTask_TagsCount(t *testing.T) {
+	task := models.NewTask("Tags", "", models.PriorityLow)
+	if task.TagsCount() != 0 {
+		t.Errorf("expected 0 tags, got %d", task.TagsCount())
+	}
+	task.AddTag("a")
+	task.AddTag("b")
+	if task.TagsCount() != 2 {
+		t.Errorf("expected 2 tags, got %d", task.TagsCount())
+	}
+}
