@@ -1,7 +1,9 @@
 package cmd
 
 import (
+	"encoding/json"
 	"fmt"
+	"os"
 	"strings"
 	"time"
 
@@ -68,6 +70,7 @@ var (
 	listArchived bool
 	listSort     string
 	listLimit    int
+	listJSON     bool
 )
 
 var taskListCmd = &cobra.Command{
@@ -91,6 +94,11 @@ var taskListCmd = &cobra.Command{
 			opts.Archived = &t
 		}
 		tasks := store.ListTasks(opts)
+		if listJSON {
+			enc := json.NewEncoder(os.Stdout)
+			enc.SetIndent("", "  ")
+			return enc.Encode(tasks)
+		}
 		display.PrintTasks(tasks)
 		return nil
 	},
@@ -352,6 +360,7 @@ func init() {
 	taskListCmd.Flags().BoolVar(&listArchived, "archived", false, "Show archived tasks instead")
 	taskListCmd.Flags().StringVarP(&listSort, "sort", "S", "", "Sort by: title, priority, due, created")
 	taskListCmd.Flags().IntVarP(&listLimit, "limit", "n", 0, "Limit number of results (0 = no limit)")
+	taskListCmd.Flags().BoolVar(&listJSON, "json", false, "Output as JSON")
 	taskCmd.AddCommand(taskAddCmd)
 	taskCmd.AddCommand(taskListCmd)
 	taskCmd.AddCommand(taskShowCmd)
