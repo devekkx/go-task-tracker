@@ -289,3 +289,22 @@ func TestStore_GetStats(t *testing.T) {
 		t.Errorf("expected 1 pending task, got %d", stats.PendingTasks)
 	}
 }
+
+func TestStore_ListTasks_defaultExcludesArchived(t *testing.T) {
+	s := tempStore(t)
+	visible := models.NewTask("Visible", "", models.PriorityLow)
+	hidden := models.NewTask("Hidden", "", models.PriorityLow)
+	_ = s.AddTask(visible)
+	_ = s.AddTask(hidden)
+	_ = s.ArchiveTask(hidden.ID)
+
+	tasks := s.ListTasks(storage.FilterOptions{})
+	for _, tsk := range tasks {
+		if tsk.ID == hidden.ID {
+			t.Error("archived task should not appear in default list")
+		}
+	}
+	if len(tasks) != 1 {
+		t.Errorf("expected 1 visible task, got %d", len(tasks))
+	}
+}
