@@ -1,5 +1,8 @@
 package cmd
 
+// Version is the current application release.
+const Version = "1.1.0"
+
 import (
 	"fmt"
 
