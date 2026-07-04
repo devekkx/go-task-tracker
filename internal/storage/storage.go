@@ -402,3 +402,19 @@ func (s *Store) SearchTodoLists(query string) []models.TodoList {
 	}
 	return result
 }
+
+// BulkMarkDone marks all tasks matching opts as done and returns the count updated.
+func (s *Store) BulkMarkDone(opts FilterOptions) (int, error) {
+	tasks := s.ListTasks(opts)
+	if len(tasks) == 0 {
+		return 0, nil
+	}
+	for _, t := range tasks {
+		task := t
+		task.MarkDone()
+		if err := s.UpdateTask(&task); err != nil {
+			return 0, err
+		}
+	}
+	return len(tasks), nil
+}
