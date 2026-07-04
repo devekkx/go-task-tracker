@@ -68,3 +68,12 @@ Back up or migrate your data with JSON export and import (v1.1.0):
 tracker export output.json
 tracker import backup.json
 ```
+
+## What's New in v1.1.0
+
+- Archive tasks you want to keep but hide from the default view
+- Sort task lists by title, priority, due date, or creation date
+- Copy any task with `task copy`
+- Mark filtered tasks done in bulk with `task bulk-done`
+- Export and import data as JSON for backup or migration
+- Machine-readable output with `--json` flag
