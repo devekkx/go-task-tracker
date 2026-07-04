@@ -239,6 +239,25 @@ var taskUpdateCmd = &cobra.Command{
 
 
 
+
+var taskCopyCmd = &cobra.Command{
+	Use:   "copy <id>",
+	Short: "Duplicate a task",
+	Args:  cobra.ExactArgs(1),
+	RunE: func(cmd *cobra.Command, args []string) error {
+		store, err := storage.New()
+		if err != nil {
+			return err
+		}
+		copied, err := store.CopyTask(args[0])
+		if err != nil {
+			return err
+		}
+		display.Success("Task copied: %s (ID: %s)", copied.Title, copied.ID)
+		return nil
+	},
+}
+
 var taskBulkDoneCmd = &cobra.Command{
 	Use:   "bulk-done",
 	Short: "Mark all filtered tasks as done",
@@ -344,6 +363,7 @@ func init() {
 	taskUpdateCmd.Flags().StringVar(&updateDue, "due", "", "New due date (YYYY-MM-DD)")
 	taskUpdateCmd.Flags().StringVarP(&updateTags, "tags", "t", "", "New tags (replaces existing)")
 	taskCmd.AddCommand(taskUpdateCmd)
+	taskCmd.AddCommand(taskCopyCmd)
 	taskCmd.AddCommand(taskBulkDoneCmd)
 	taskCmd.AddCommand(taskClearDoneCmd)
 	taskCmd.AddCommand(taskArchiveCmd)
