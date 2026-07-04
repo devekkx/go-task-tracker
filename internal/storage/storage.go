@@ -57,7 +57,7 @@ func (s *Store) load() error {
 		return fmt.Errorf("failed to read data file: %w", err)
 	}
 	if err := json.Unmarshal(data, s); err != nil {
-		return fmt.Errorf("failed to parse data file: %w", err)
+		return fmt.Errorf("failed to parse data file %s: %w", s.path, err)
 	}
 	return nil
 }
