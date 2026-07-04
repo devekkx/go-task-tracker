@@ -136,6 +136,9 @@ func PrintTodoLists(lists []models.TodoList) {
 func PrintTodoList(l *models.TodoList) {
 	headerColor.Printf("\n  List: %s\n", l.Name)
 	fmt.Printf("  ID: %s\n", l.ID)
+	if l.Description != "" {
+		fmt.Printf("  Description: %s\n", l.Description)
+	}
 	fmt.Printf("  Progress: %.0f%% (%d/%d done)\n", l.Progress(), l.DoneItems(), l.TotalItems())
 	fmt.Println(strings.Repeat("─", 50))
 	if len(l.Items) == 0 {
