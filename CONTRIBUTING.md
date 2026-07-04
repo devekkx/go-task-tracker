@@ -8,3 +8,11 @@ Pull requests are welcome.
 make build
 make test
 ```
+
+## Running Tests
+
+```bash
+make test        # run all tests
+make coverage    # show test coverage
+make vet         # run go vet
+```
