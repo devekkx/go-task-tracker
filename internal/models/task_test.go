@@ -135,3 +135,20 @@ func TestTask_TagsCount(t *testing.T) {
 		t.Errorf("expected 2 tags, got %d", task.TagsCount())
 	}
 }
+
+func TestTask_MarkInProgress(t *testing.T) {
+	task := models.NewTask("Start me", "", models.PriorityMedium)
+	task.MarkInProgress()
+	if task.Status != models.StatusInProgress {
+		t.Errorf("expected in-progress, got %q", task.Status)
+	}
+}
+
+func TestTask_MarkPending(t *testing.T) {
+	task := models.NewTask("Reset me", "", models.PriorityLow)
+	task.MarkDone()
+	task.MarkPending()
+	if task.Status != models.StatusPending {
+		t.Errorf("expected pending, got %q", task.Status)
+	}
+}
