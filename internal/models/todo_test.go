@@ -84,3 +84,14 @@ func TestTodoList_Rename(t *testing.T) {
 		t.Error("expected error for empty name")
 	}
 }
+
+func TestTodoList_PendingItems(t *testing.T) {
+	list := models.NewTodoList("Pending test")
+	a := list.AddItem("A")
+	list.AddItem("B")
+	list.AddItem("C")
+	_ = list.CheckItem(a.ID)
+	if list.PendingItems() != 2 {
+		t.Errorf("expected 2 pending, got %d", list.PendingItems())
+	}
+}
