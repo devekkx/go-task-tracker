@@ -67,6 +67,7 @@ var (
 	listSearch   string
 	listArchived bool
 	listSort     string
+	listLimit    int
 )
 
 var taskListCmd = &cobra.Command{
@@ -350,6 +351,7 @@ func init() {
 	taskListCmd.Flags().StringVarP(&listSearch, "search", "q", "", "Search title and description")
 	taskListCmd.Flags().BoolVar(&listArchived, "archived", false, "Show archived tasks instead")
 	taskListCmd.Flags().StringVarP(&listSort, "sort", "S", "", "Sort by: title, priority, due, created")
+	taskListCmd.Flags().IntVarP(&listLimit, "limit", "n", 0, "Limit number of results (0 = no limit)")
 	taskCmd.AddCommand(taskAddCmd)
 	taskCmd.AddCommand(taskListCmd)
 	taskCmd.AddCommand(taskShowCmd)
