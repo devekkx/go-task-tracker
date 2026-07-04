@@ -152,3 +152,14 @@ func TestTask_MarkPending(t *testing.T) {
 		t.Errorf("expected pending, got %q", task.Status)
 	}
 }
+
+func TestValidStatus(t *testing.T) {
+	for _, valid := range []string{"pending", "in-progress", "done"} {
+		if _, err := models.ValidStatus(valid); err != nil {
+			t.Errorf("expected %q to be valid: %v", valid, err)
+		}
+	}
+	if _, err := models.ValidStatus("cancelled"); err == nil {
+		t.Error("expected error for invalid status")
+	}
+}
