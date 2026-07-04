@@ -248,3 +248,24 @@ func TestStore_BulkMarkDone(t *testing.T) {
 		t.Errorf("expected 2 tasks marked done, got %d", n)
 	}
 }
+
+func TestStore_CopyTask(t *testing.T) {
+	s := tempStore(t)
+	orig := models.NewTask("Original", "some desc", models.PriorityHigh)
+	orig.AddTag("important")
+	_ = s.AddTask(orig)
+
+	copied, err := s.CopyTask(orig.ID)
+	if err != nil {
+		t.Fatalf("CopyTask: %v", err)
+	}
+	if copied.ID == orig.ID {
+		t.Error("copy should have a different ID")
+	}
+	if copied.Title != "Original (copy)" {
+		t.Errorf("expected copied title, got %q", copied.Title)
+	}
+	if !copied.HasTag("important") {
+		t.Error("copy should have the same tags")
+	}
+}
