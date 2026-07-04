@@ -38,3 +38,7 @@ vet:
 .PHONY: run
 run: build
 	./bin/tracker
+
+.PHONY: lint
+lint: vet
+	@echo Lint complete
