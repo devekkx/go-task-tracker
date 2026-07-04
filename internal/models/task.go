@@ -142,7 +142,7 @@ func ValidStatus(s string) (Status, error) {
 	}
 }
 
-// HasTag reports whether the task has the given tag.
+// HasTag reports whether the given tag appears in the task tag list.
 func (t *Task) HasTag(tag string) bool {
 	for _, existing := range t.Tags {
 		if existing == tag {
