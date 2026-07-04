@@ -238,6 +238,33 @@ var taskUpdateCmd = &cobra.Command{
 
 
 
+
+var taskBulkDoneCmd = &cobra.Command{
+	Use:   "bulk-done",
+	Short: "Mark all filtered tasks as done",
+	RunE: func(cmd *cobra.Command, args []string) error {
+		store, err := storage.New()
+		if err != nil {
+			return err
+		}
+		opts := storage.FilterOptions{
+			Status:   listStatus,
+			Priority: listPriority,
+			Tag:      listTag,
+		}
+		n, err := store.BulkMarkDone(opts)
+		if err != nil {
+			return err
+		}
+		if n == 0 {
+			display.Info("No matching tasks.")
+		} else {
+			display.Success("Marked %d task(s) as done.", n)
+		}
+		return nil
+	},
+}
+
 var taskClearDoneCmd = &cobra.Command{
 	Use:   "clear-done",
 	Short: "Remove all completed tasks",
@@ -317,6 +344,7 @@ func init() {
 	taskUpdateCmd.Flags().StringVar(&updateDue, "due", "", "New due date (YYYY-MM-DD)")
 	taskUpdateCmd.Flags().StringVarP(&updateTags, "tags", "t", "", "New tags (replaces existing)")
 	taskCmd.AddCommand(taskUpdateCmd)
+	taskCmd.AddCommand(taskBulkDoneCmd)
 	taskCmd.AddCommand(taskClearDoneCmd)
 	taskCmd.AddCommand(taskArchiveCmd)
 	taskCmd.AddCommand(taskUnarchiveCmd)
