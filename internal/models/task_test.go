@@ -173,3 +173,15 @@ func TestTask_ClearTags(t *testing.T) {
 		t.Errorf("expected 0 tags after clear, got %d", task.TagsCount())
 	}
 }
+
+func TestTask_SetDueDate(t *testing.T) {
+	task := models.NewTask("Dated", "", models.PriorityLow)
+	if task.DueDate != nil {
+		t.Error("expected nil due date on new task")
+	}
+	due := time.Now().Add(48 * time.Hour)
+	task.SetDueDate(due)
+	if task.DueDate == nil {
+		t.Error("expected due date to be set")
+	}
+}
