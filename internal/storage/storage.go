@@ -418,3 +418,21 @@ func (s *Store) BulkMarkDone(opts FilterOptions) (int, error) {
 	}
 	return len(tasks), nil
 }
+
+// CopyTask creates a duplicate of the given task with a new ID.
+func (s *Store) CopyTask(id string) (*models.Task, error) {
+	src, err := s.GetTask(id)
+	if err != nil {
+		return nil, err
+	}
+	copied := models.NewTask(src.Title+" (copy)", src.Description, src.Priority)
+	copied.Tags = append([]string{}, src.Tags...)
+	if src.DueDate != nil {
+		d := *src.DueDate
+		copied.SetDueDate(d)
+	}
+	if err := s.AddTask(copied); err != nil {
+		return nil, err
+	}
+	return copied, nil
+}
