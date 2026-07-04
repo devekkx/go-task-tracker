@@ -38,7 +38,7 @@ type Task struct {
 	UpdatedAt   time.Time  `json:"updated_at"`
 }
 
-// NewTask creates a Task with defaults.
+// NewTask creates a Task with sensible defaults: pending status, given priority, and empty tags slice.
 func NewTask(title, description string, priority Priority) *Task {
 	now := time.Now()
 	return &Task{
