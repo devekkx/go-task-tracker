@@ -193,7 +193,7 @@ func matchesFilter(t models.Task, opts FilterOptions) bool {
 	if opts.Priority != "" && string(t.Priority) != opts.Priority {
 		return false
 	}
-	if opts.Tag != "" { // case-sensitive tag match
+	if opts.Tag != "" { // exact case-sensitive tag match
 		found := false
 		for _, tag := range t.Tags {
 			if tag == opts.Tag {
