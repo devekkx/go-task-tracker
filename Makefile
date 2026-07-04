@@ -34,3 +34,7 @@ coverage:
 .PHONY: vet
 vet:
 	go vet ./...
+
+.PHONY: run
+run: build
+	./bin/tracker
