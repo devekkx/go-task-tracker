@@ -163,3 +163,13 @@ func TestValidStatus(t *testing.T) {
 		t.Error("expected error for invalid status")
 	}
 }
+
+func TestTask_ClearTags(t *testing.T) {
+	task := models.NewTask("Multi-tag", "", models.PriorityLow)
+	task.AddTag("a")
+	task.AddTag("b")
+	task.ClearTags()
+	if task.TagsCount() != 0 {
+		t.Errorf("expected 0 tags after clear, got %d", task.TagsCount())
+	}
+}
