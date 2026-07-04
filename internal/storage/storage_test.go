@@ -269,3 +269,23 @@ func TestStore_CopyTask(t *testing.T) {
 		t.Error("copy should have the same tags")
 	}
 }
+
+func TestStore_GetStats(t *testing.T) {
+	s := tempStore(t)
+	t1 := models.NewTask("Task 1", "", models.PriorityLow)
+	t2 := models.NewTask("Task 2", "", models.PriorityHigh)
+	t2.MarkDone()
+	_ = s.AddTask(t1)
+	_ = s.AddTask(t2)
+
+	stats := s.GetStats()
+	if stats.TotalTasks != 2 {
+		t.Errorf("expected 2 total tasks, got %d", stats.TotalTasks)
+	}
+	if stats.DoneTasks != 1 {
+		t.Errorf("expected 1 done task, got %d", stats.DoneTasks)
+	}
+	if stats.PendingTasks != 1 {
+		t.Errorf("expected 1 pending task, got %d", stats.PendingTasks)
+	}
+}
