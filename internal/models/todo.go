@@ -109,13 +109,13 @@ func (l *TodoList) TotalItems() int { return len(l.Items) }
 
 // DoneItems returns the number of completed items.
 func (l *TodoList) DoneItems() int {
-	count := 0
+	n := 0
 	for _, item := range l.Items {
 		if item.Done {
-			count++
+			n++
 		}
 	}
-	return count
+	return n
 }
 
 // PendingItems returns the number of incomplete items.
