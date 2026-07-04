@@ -165,7 +165,7 @@ func PrintTodoList(l *models.TodoList) {
 func PrintStats(stats storage.Stats) {
 	headerColor.Println("\n  Task Tracker Statistics")
 	fmt.Println(strings.Repeat("─", 40))
-	boldColor.Println("\n  Tasks:")
+	boldColor.Printf("\n  Tasks (%d):\n", stats.TotalTasks)
 	fmt.Printf("    %-20s %d\n", "Total:", stats.TotalTasks)
 	fmt.Printf("    %-20s %d\n", "Pending:", stats.PendingTasks)
 	fmt.Printf("    %-20s %d\n", "In Progress:", stats.InProgressTasks)
