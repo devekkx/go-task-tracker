@@ -59,6 +59,7 @@ func PrintTasks(tasks []models.Task) {
 		tablewriter.Colors{tablewriter.Bold, tablewriter.FgCyanColor},
 		tablewriter.Colors{tablewriter.Bold, tablewriter.FgCyanColor},
 	)
+	headerColor.Printf("\n  Tasks (%d)\n", len(tasks))
 	for _, t := range tasks {
 		row := []string{
 			truncate(t.ID, 16),
