@@ -233,3 +233,18 @@ func TestStore_SearchTodoLists(t *testing.T) {
 		t.Errorf("expected 2 results, got %d", len(results))
 	}
 }
+
+func TestStore_BulkMarkDone(t *testing.T) {
+	s := tempStore(t)
+	_ = s.AddTask(models.NewTask("High 1", "", models.PriorityHigh))
+	_ = s.AddTask(models.NewTask("High 2", "", models.PriorityHigh))
+	_ = s.AddTask(models.NewTask("Low 1", "", models.PriorityLow))
+
+	n, err := s.BulkMarkDone(storage.FilterOptions{Priority: "high"})
+	if err != nil {
+		t.Fatalf("BulkMarkDone: %v", err)
+	}
+	if n != 2 {
+		t.Errorf("expected 2 tasks marked done, got %d", n)
+	}
+}
