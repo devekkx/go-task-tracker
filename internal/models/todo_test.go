@@ -95,3 +95,19 @@ func TestTodoList_PendingItems(t *testing.T) {
 		t.Errorf("expected 2 pending, got %d", list.PendingItems())
 	}
 }
+
+func TestTodoList_GetItem(t *testing.T) {
+	list := models.NewTodoList("Find me")
+	item := list.AddItem("Findable item")
+	found, err := list.GetItem(item.ID)
+	if err != nil {
+		t.Fatalf("GetItem: %v", err)
+	}
+	if found.Content != "Findable item" {
+		t.Errorf("expected content 'Findable item', got %q", found.Content)
+	}
+	_, err = list.GetItem("nonexistent")
+	if err == nil {
+		t.Error("expected error for nonexistent item")
+	}
+}
