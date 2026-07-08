@@ -74,10 +74,6 @@ func (s *Store) save() error {
 	return nil
 }
 
-// DataPath returns the absolute path to the backing JSON file.
-// Useful for diagnostics and export workflows.
-func (s *Store) DataPath() string { return s.path }
-
 // AddTask persists a new task.
 func (s *Store) AddTask(task *models.Task) error {
 	if err := task.Validate(); err != nil {
@@ -436,9 +432,3 @@ func (s *Store) CopyTask(id string) (*models.Task, error) {
 	}
 	return copied, nil
 }
-
-// TaskCount returns the total number of tasks including archived.
-func (s *Store) TaskCount() int { return len(s.Tasks) }
-
-// TodoListCount returns the total number of todo lists.
-func (s *Store) TodoListCount() int { return len(s.TodoLists) }
