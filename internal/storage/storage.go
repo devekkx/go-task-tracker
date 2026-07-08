@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"slices"
 	"sort"
 	"strings"
 
@@ -189,17 +190,8 @@ func matchesFilter(t models.Task, opts FilterOptions) bool {
 	if opts.Priority != "" && string(t.Priority) != opts.Priority {
 		return false
 	}
-	if opts.Tag != "" { // exact case-sensitive tag match
-		found := false
-		for _, tag := range t.Tags {
-			if tag == opts.Tag {
-				found = true
-				break
-			}
-		}
-		if !found {
-			return false
-		}
+	if opts.Tag != "" && !slices.Contains(t.Tags, opts.Tag) { // exact case-sensitive tag match
+		return false
 	}
 	return true
 }
