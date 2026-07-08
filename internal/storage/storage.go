@@ -129,7 +129,7 @@ type FilterOptions struct {
 	Priority string
 	Tag      string
 	Search   string
-	Archived *bool // nil = exclude archived, true = only archived, false = all
+	Archived *bool  // nil = exclude archived, true = only archived, false = all
 	SortBy   string // title, priority, due, created
 }
 
@@ -260,14 +260,14 @@ func (s *Store) ListTodoLists() []models.TodoList {
 
 // Stats summarises task and todo counts.
 type Stats struct {
-	TotalTasks      int
-	PendingTasks    int
-	InProgressTasks int
-	DoneTasks       int
-	OverdueTasks    int
-	ArchivedTasks   int
-	TotalTodoLists  int
-	TotalTodoItems  int
+	TotalTasks       int
+	PendingTasks     int
+	InProgressTasks  int
+	DoneTasks        int
+	OverdueTasks     int
+	ArchivedTasks    int
+	TotalTodoLists   int
+	TotalTodoItems   int
 	DoneTodoItems    int
 	PendingTodoItems int
 }
