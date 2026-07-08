@@ -46,7 +46,7 @@ var taskAddCmd = &cobra.Command{
 			task.SetDueDate(d)
 		}
 		if addTags != "" {
-			for _, tag := range strings.Split(addTags, ",") {
+			for tag := range strings.SplitSeq(addTags, ",") {
 				task.AddTag(strings.TrimSpace(tag))
 			}
 		}
@@ -220,7 +220,7 @@ var taskUpdateCmd = &cobra.Command{
 		}
 		if updateTags != "" {
 			task.Tags = []string{}
-			for _, tag := range strings.Split(updateTags, ",") {
+			for tag := range strings.SplitSeq(updateTags, ",") {
 				task.AddTag(strings.TrimSpace(tag))
 			}
 			changed = true
