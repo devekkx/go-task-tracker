@@ -19,62 +19,46 @@ var todoCreateCmd = &cobra.Command{
 	Use:   "create <name>",
 	Short: "Create a new todo list",
 	Args:  cobra.MinimumNArgs(1),
-	RunE: func(cmd *cobra.Command, args []string) error {
+	RunE: withStore(func(store *storage.Store, args []string) error {
 		name := strings.Join(args, " ")
 		list := models.NewTodoList(name)
-		store, err := storage.New()
-		if err != nil {
-			return err
-		}
 		if err := store.AddTodoList(list); err != nil {
 			return err
 		}
 		display.Success("Todo list created: %s (ID: %s)", list.Name, list.ID)
 		return nil
-	},
+	}),
 }
 
 var todoListCmd = &cobra.Command{
 	Use:     "list",
 	Aliases: []string{"ls"},
 	Short:   "List all todo lists",
-	RunE: func(cmd *cobra.Command, args []string) error {
-		store, err := storage.New()
-		if err != nil {
-			return err
-		}
+	RunE: withStore(func(store *storage.Store, args []string) error {
 		display.PrintTodoLists(store.ListTodoLists())
 		return nil
-	},
+	}),
 }
 
 var todoShowCmd = &cobra.Command{
 	Use:   "show <list-id>",
 	Short: "Show items in a todo list",
 	Args:  cobra.ExactArgs(1),
-	RunE: func(cmd *cobra.Command, args []string) error {
-		store, err := storage.New()
-		if err != nil {
-			return err
-		}
+	RunE: withStore(func(store *storage.Store, args []string) error {
 		list, err := store.GetTodoList(args[0])
 		if err != nil {
 			return err
 		}
 		display.PrintTodoList(list)
 		return nil
-	},
+	}),
 }
 
 var todoAddCmd = &cobra.Command{
 	Use:   "add <list-id> <content>",
 	Short: "Add an item to a todo list",
 	Args:  cobra.MinimumNArgs(2),
-	RunE: func(cmd *cobra.Command, args []string) error {
-		store, err := storage.New()
-		if err != nil {
-			return err
-		}
+	RunE: withStore(func(store *storage.Store, args []string) error {
 		list, err := store.GetTodoList(args[0])
 		if err != nil {
 			return err
@@ -85,18 +69,14 @@ var todoAddCmd = &cobra.Command{
 		}
 		display.Success("Item added: %s (ID: %s)", item.Content, item.ID)
 		return nil
-	},
+	}),
 }
 
 var todoCheckCmd = &cobra.Command{
 	Use:   "check <list-id> <item-id>",
 	Short: "Mark a todo item as done",
 	Args:  cobra.ExactArgs(2),
-	RunE: func(cmd *cobra.Command, args []string) error {
-		store, err := storage.New()
-		if err != nil {
-			return err
-		}
+	RunE: withStore(func(store *storage.Store, args []string) error {
 		list, err := store.GetTodoList(args[0])
 		if err != nil {
 			return err
@@ -109,18 +89,14 @@ var todoCheckCmd = &cobra.Command{
 		}
 		display.Success("Item checked.")
 		return nil
-	},
+	}),
 }
 
 var todoUncheckCmd = &cobra.Command{
 	Use:   "uncheck <list-id> <item-id>",
 	Short: "Unmark a todo item",
 	Args:  cobra.ExactArgs(2),
-	RunE: func(cmd *cobra.Command, args []string) error {
-		store, err := storage.New()
-		if err != nil {
-			return err
-		}
+	RunE: withStore(func(store *storage.Store, args []string) error {
 		list, err := store.GetTodoList(args[0])
 		if err != nil {
 			return err
@@ -133,18 +109,14 @@ var todoUncheckCmd = &cobra.Command{
 		}
 		display.Success("Item unchecked.")
 		return nil
-	},
+	}),
 }
 
 var todoRemoveCmd = &cobra.Command{
 	Use:   "remove <list-id> <item-id>",
 	Short: "Remove an item from a todo list",
 	Args:  cobra.ExactArgs(2),
-	RunE: func(cmd *cobra.Command, args []string) error {
-		store, err := storage.New()
-		if err != nil {
-			return err
-		}
+	RunE: withStore(func(store *storage.Store, args []string) error {
 		list, err := store.GetTodoList(args[0])
 		if err != nil {
 			return err
@@ -162,7 +134,7 @@ var todoRemoveCmd = &cobra.Command{
 		}
 		display.Success("Item removed: %s", content)
 		return nil
-	},
+	}),
 }
 
 var todoDeleteCmd = &cobra.Command{
@@ -170,11 +142,7 @@ var todoDeleteCmd = &cobra.Command{
 	Aliases: []string{"rm"},
 	Short:   "Delete a todo list",
 	Args:    cobra.ExactArgs(1),
-	RunE: func(cmd *cobra.Command, args []string) error {
-		store, err := storage.New()
-		if err != nil {
-			return err
-		}
+	RunE: withStore(func(store *storage.Store, args []string) error {
 		list, err := store.GetTodoList(args[0])
 		if err != nil {
 			return err
@@ -185,7 +153,7 @@ var todoDeleteCmd = &cobra.Command{
 		}
 		display.Success("Todo list deleted: %s", name)
 		return nil
-	},
+	}),
 }
 
 func init() {

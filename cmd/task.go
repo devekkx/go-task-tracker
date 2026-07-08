@@ -31,7 +31,7 @@ var taskAddCmd = &cobra.Command{
 	Use:   "add <title>",
 	Short: "Add a task",
 	Args:  cobra.MinimumNArgs(1),
-	RunE: func(cmd *cobra.Command, args []string) error {
+	RunE: withStore(func(store *storage.Store, args []string) error {
 		title := strings.Join(args, " ")
 		priority, err := models.ValidPriority(addPriority)
 		if err != nil {
@@ -50,16 +50,12 @@ var taskAddCmd = &cobra.Command{
 				task.AddTag(strings.TrimSpace(tag))
 			}
 		}
-		store, err := storage.New()
-		if err != nil {
-			return err
-		}
 		if err := store.AddTask(task); err != nil {
 			return err
 		}
 		display.Success("Task added: %s (ID: %s)", task.Title, task.ID)
 		return nil
-	},
+	}),
 }
 
 var (
@@ -77,11 +73,7 @@ var taskListCmd = &cobra.Command{
 	Use:     "list",
 	Aliases: []string{"ls"},
 	Short:   "List all tasks",
-	RunE: func(cmd *cobra.Command, args []string) error {
-		store, err := storage.New()
-		if err != nil {
-			return err
-		}
+	RunE: withStore(func(store *storage.Store, args []string) error {
 		opts := storage.FilterOptions{
 			Status:   listStatus,
 			Priority: listPriority,
@@ -104,36 +96,28 @@ var taskListCmd = &cobra.Command{
 		}
 		display.PrintTasks(tasks)
 		return nil
-	},
+	}),
 }
 
 var taskShowCmd = &cobra.Command{
 	Use:   "show <id>",
 	Short: "Show details of a task",
 	Args:  cobra.ExactArgs(1),
-	RunE: func(cmd *cobra.Command, args []string) error {
-		store, err := storage.New()
-		if err != nil {
-			return err
-		}
+	RunE: withStore(func(store *storage.Store, args []string) error {
 		task, err := store.GetTask(args[0])
 		if err != nil {
 			return err
 		}
 		display.PrintTask(task)
 		return nil
-	},
+	}),
 }
 
 var taskDoneCmd = &cobra.Command{
 	Use:   "done <id>",
 	Short: "Mark a task as done",
 	Args:  cobra.ExactArgs(1),
-	RunE: func(cmd *cobra.Command, args []string) error {
-		store, err := storage.New()
-		if err != nil {
-			return err
-		}
+	RunE: withStore(func(store *storage.Store, args []string) error {
 		task, err := store.GetTask(args[0])
 		if err != nil {
 			return err
@@ -144,18 +128,14 @@ var taskDoneCmd = &cobra.Command{
 		}
 		display.Success("Task marked as done: %s", task.Title)
 		return nil
-	},
+	}),
 }
 
 var taskStartCmd = &cobra.Command{
 	Use:   "start <id>",
 	Short: "Mark a task as in-progress",
 	Args:  cobra.ExactArgs(1),
-	RunE: func(cmd *cobra.Command, args []string) error {
-		store, err := storage.New()
-		if err != nil {
-			return err
-		}
+	RunE: withStore(func(store *storage.Store, args []string) error {
 		task, err := store.GetTask(args[0])
 		if err != nil {
 			return err
@@ -166,7 +146,7 @@ var taskStartCmd = &cobra.Command{
 		}
 		display.Success("Task started: %s", task.Title)
 		return nil
-	},
+	}),
 }
 
 var taskDeleteCmd = &cobra.Command{
@@ -174,11 +154,7 @@ var taskDeleteCmd = &cobra.Command{
 	Aliases: []string{"rm"},
 	Short:   "Delete a task",
 	Args:    cobra.ExactArgs(1),
-	RunE: func(cmd *cobra.Command, args []string) error {
-		store, err := storage.New()
-		if err != nil {
-			return err
-		}
+	RunE: withStore(func(store *storage.Store, args []string) error {
 		task, err := store.GetTask(args[0])
 		if err != nil {
 			return err
@@ -188,7 +164,7 @@ var taskDeleteCmd = &cobra.Command{
 		}
 		display.Success("Task deleted: %s", task.Title)
 		return nil
-	},
+	}),
 }
 
 var (
@@ -204,11 +180,7 @@ var taskUpdateCmd = &cobra.Command{
 	Use:   "update <id>",
 	Short: "Update a task",
 	Args:  cobra.ExactArgs(1),
-	RunE: func(cmd *cobra.Command, args []string) error {
-		store, err := storage.New()
-		if err != nil {
-			return err
-		}
+	RunE: withStore(func(store *storage.Store, args []string) error {
 		task, err := store.GetTask(args[0])
 		if err != nil {
 			return err
@@ -262,35 +234,27 @@ var taskUpdateCmd = &cobra.Command{
 		}
 		display.Success("Task updated: %s", task.Title)
 		return nil
-	},
+	}),
 }
 
 var taskCopyCmd = &cobra.Command{
 	Use:   "copy <id>",
 	Short: "Duplicate a task",
 	Args:  cobra.ExactArgs(1),
-	RunE: func(cmd *cobra.Command, args []string) error {
-		store, err := storage.New()
-		if err != nil {
-			return err
-		}
+	RunE: withStore(func(store *storage.Store, args []string) error {
 		copied, err := store.CopyTask(args[0])
 		if err != nil {
 			return err
 		}
 		display.Success("Task copied: %s (ID: %s)", copied.Title, copied.ID)
 		return nil
-	},
+	}),
 }
 
 var taskBulkDoneCmd = &cobra.Command{
 	Use:   "bulk-done",
 	Short: "Mark all filtered tasks as done",
-	RunE: func(cmd *cobra.Command, args []string) error {
-		store, err := storage.New()
-		if err != nil {
-			return err
-		}
+	RunE: withStore(func(store *storage.Store, args []string) error {
 		opts := storage.FilterOptions{
 			Status:   listStatus,
 			Priority: listPriority,
@@ -306,17 +270,13 @@ var taskBulkDoneCmd = &cobra.Command{
 			display.Success("Marked %d task(s) as done.", n)
 		}
 		return nil
-	},
+	}),
 }
 
 var taskClearDoneCmd = &cobra.Command{
 	Use:   "clear-done",
 	Short: "Remove all completed tasks",
-	RunE: func(cmd *cobra.Command, args []string) error {
-		store, err := storage.New()
-		if err != nil {
-			return err
-		}
+	RunE: withStore(func(store *storage.Store, args []string) error {
 		n, err := store.ClearDoneTasks()
 		if err != nil {
 			return err
@@ -327,41 +287,33 @@ var taskClearDoneCmd = &cobra.Command{
 			display.Success("Removed %d completed task(s).", n)
 		}
 		return nil
-	},
+	}),
 }
 
 var taskArchiveCmd = &cobra.Command{
 	Use:   "archive <id>",
 	Short: "Archive a task",
 	Args:  cobra.ExactArgs(1),
-	RunE: func(cmd *cobra.Command, args []string) error {
-		store, err := storage.New()
-		if err != nil {
-			return err
-		}
+	RunE: withStore(func(store *storage.Store, args []string) error {
 		if err := store.ArchiveTask(args[0]); err != nil {
 			return err
 		}
 		display.Success("Task archived: %s", args[0])
 		return nil
-	},
+	}),
 }
 
 var taskUnarchiveCmd = &cobra.Command{
 	Use:   "unarchive <id>",
 	Short: "Restore an archived task",
 	Args:  cobra.ExactArgs(1),
-	RunE: func(cmd *cobra.Command, args []string) error {
-		store, err := storage.New()
-		if err != nil {
-			return err
-		}
+	RunE: withStore(func(store *storage.Store, args []string) error {
 		if err := store.UnarchiveTask(args[0]); err != nil {
 			return err
 		}
 		display.Success("Task unarchived: %s", args[0])
 		return nil
-	},
+	}),
 }
 
 func init() {
