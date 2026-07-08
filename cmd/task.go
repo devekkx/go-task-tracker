@@ -94,6 +94,9 @@ var taskListCmd = &cobra.Command{
 			opts.Archived = &t
 		}
 		tasks := store.ListTasks(opts)
+		if listLimit > 0 && len(tasks) > listLimit {
+			tasks = tasks[:listLimit]
+		}
 		if listJSON {
 			enc := json.NewEncoder(os.Stdout)
 			enc.SetIndent("", "  ")
